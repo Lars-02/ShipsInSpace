@@ -5,7 +5,7 @@
     ViewData["Title"] = "Setup ship";
 }
 
-<form asp-controller="RegisterShip" asp-action="RegisterPirate" method="POST">
+<form asp-controller="RegisterShip" asp-action="SetupShip" method="POST">
     @Html.AntiForgeryToken()
     <div class="form-group d-flex flex-column">
         <label class="mb-0" asp-for="@Model.SelectedEngine"></label>
