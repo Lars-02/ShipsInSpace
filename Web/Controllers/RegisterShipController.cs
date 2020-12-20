@@ -38,11 +38,19 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Index", viewModel);
-            
-            var selectedEngine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine);
-            var selectedHull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull);
 
-            return RedirectToAction("Index");
+            return View("Wings", new RegisterShipWingsViewModel
+            {
+                NumberOfWings = viewModel.NumberOfWings,
+                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine),
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull),
+                Wings = new List<SelectListItem>(_spaceTransitAuthority.GetWings().Select(wing => new SelectListItem(wing.Name + " - " + wing.Energy + " - " + wing.Weight + " - " + wing.WeaponSlots, wing.Id.ToString())))
+            });
+        }
+
+        public IActionResult AddWings(RegisterShipWingsViewModel viewModel)
+        {
+            throw new NotImplementedException();
         }
         
         [HttpPost]

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
     @await RenderSectionAsync("Stylesheets", false)
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 </head>
 <body>
 <header>

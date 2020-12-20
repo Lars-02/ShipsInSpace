@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -26,6 +25,6 @@ namespace Web.ViewModels
         [Remote(action: "VerifyNumberOfWings", controller: "RegisterShip", HttpMethod = "POST",
             AdditionalFields = "__RequestVerificationToken")]
         [DisplayName("Number of wings")]
-        public byte NumberOfWings { get; } = 2;
+        public byte NumberOfWings { get; set; } = 2;
     }
 }

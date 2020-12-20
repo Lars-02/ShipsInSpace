@@ -1,0 +1,17 @@
+﻿@model Web.ViewModels.RegisterShipWingsViewModel
+
+@{
+    ViewData["Title"] = "Setup ship";
+}
+
+<form asp-controller="RegisterShip" asp-action="AddWings" method="POST">
+    @Html.AntiForgeryToken()
+    @for (int i = Model.NumberOfWings; i > 0; i--)
+    {
+        <div class="form-group d-flex flex-column">
+            <label class="mb-0" asp-for="@Model.SelectedWings"></label>
+            @Html.DropDownListFor(m => m.SelectedWings, Model.Wings, new {@class = "form-control"})
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
