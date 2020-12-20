@@ -1,9 +1,0 @@
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.AssemblyInfoInputs.cache
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.AssemblyInfo.cs
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.csproj.CoreCompileInputs.cache
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\bin\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.deps.json
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\bin\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.dll
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\bin\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.pdb
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.dll
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.pdb
-C:\Users\egmku\source\repos\ShipsInSpace\GalacticSpaceTransitAuthority\obj\Debug\netcoreapp3.1\GalacticSpaceTransitAuthority.csprojAssemblyReference.cache
