@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GalacticSpaceTransitAuthority
+﻿namespace Data.Model
 {
     public class Weapon
     {

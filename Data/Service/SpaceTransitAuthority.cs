@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Data.Model;
 
-namespace GalacticSpaceTransitAuthority
+namespace Data.Service
 {
     public class SpaceTransitAuthority : ISpaceTransitAuthority
     {

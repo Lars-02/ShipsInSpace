@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GalacticSpaceTransitAuthority
+namespace Data.Model
 {
     public class Ship
     {

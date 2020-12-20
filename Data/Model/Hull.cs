@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GalacticSpaceTransitAuthority
+namespace Data.Model
 {
     public class Hull
     {

@@ -1,4 +1,4 @@
-﻿namespace GalacticSpaceTransitAuthority
+﻿namespace Data.Model
 {
     public class Engine
     {

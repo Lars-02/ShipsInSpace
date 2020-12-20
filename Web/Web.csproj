@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
+  </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="ViewModels" />
+     <Folder Include="wwwroot\images" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\boots\iron_boots.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\boots\leather_boots.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\boots\netherite_boots.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\chest\diamond_chestplate.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\chest\leather_tunic.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\chest\netherite_chestplate.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\helmet\carved_pumpkin.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\helmet\golden_helmet.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\helmet\turtle_shell.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\leggings\chainmail_leggings.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\leggings\diamond_leggings.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\leggings\iron_leggings.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\potion\Potion_of_Night_Vision.gif" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\potion\Potion_of_Regeneration.gif" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\potion\Potion_of_Swiftness.gif" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\sword\golden_sword.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\sword\iron_sword.png" />
+     <_ContentIncludedByDefault Remove="wwwroot\images\equipment\sword\netherite_sword.png" />
+   </ItemGroup>
+
+</Project>

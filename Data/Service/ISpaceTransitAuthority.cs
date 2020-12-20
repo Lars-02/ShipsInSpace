@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Data.Model;
 
-namespace GalacticSpaceTransitAuthority
+namespace Data.Service
 {
     public interface ISpaceTransitAuthority
     {
