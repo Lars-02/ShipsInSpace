@@ -59,26 +59,25 @@ namespace Web.Controllers
                 SelectedWeapons = new List<int>[viewModel.NumberOfWings],
                 AvailableWings = _availableWings,
                 AvailableWeapons = _availableWeapons,
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull),
+                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine),
                 EngineId = viewModel.SelectedEngine,
                 HullId = viewModel.SelectedHull
             });
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult VerifyNumberOfWings(int numberOfWings)
-        {
-            return numberOfWings % 2 == 0 ? Json(true) : Json("A ship has an even number of wings.");
-        }
-
-        [HttpPost]
         public IActionResult Wings(WingsViewModel viewModel)
         {
-            viewModel.AvailableWings = _availableWings;
-            viewModel.AvailableWeapons = _availableWeapons;
-
             if (!ModelState.IsValid)
+            {
+                viewModel.AvailableWings = _availableWings;
+                viewModel.AvailableWeapons = _availableWeapons;
+                viewModel.Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId);
+                viewModel.Engine = _spaceTransitAuthority.GetEngines()
+                    .FirstOrDefault(engine => engine.Id == viewModel.EngineId);
                 return View(viewModel);
+            }
 
             var wings = new List<Wing>();
 
@@ -99,6 +98,13 @@ namespace Web.Controllers
                 Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.EngineId),
                 Wings = wings
             });
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult VerifyNumberOfWings(int numberOfWings)
+        {
+            return numberOfWings % 2 == 0 ? Json(true) : Json("A ship has an even number of wings.");
         }
     }
 }

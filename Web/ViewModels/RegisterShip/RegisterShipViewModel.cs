@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Web.ViewModels
+namespace Web.ViewModels.RegisterShip
 {
     public class RegisterShipViewModel
     {
@@ -16,7 +16,6 @@ namespace Web.ViewModels
         
         [Required]
         [DisplayName("Engine")]
-        
         public int SelectedEngine { get; set; }
         
         public List<SelectListItem> Engines { get; set; }
