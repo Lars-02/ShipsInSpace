@@ -77,6 +77,9 @@ namespace Web.Controllers
             viewModel.AvailableWings = _availableWings;
             viewModel.AvailableWeapons = _availableWeapons;
             
+            if (!ModelState.IsValid)
+                return View(viewModel);
+            
             foreach (var wingId in viewModel.SelectedWings)
                 Console.WriteLine(wingId);
             foreach (var weaponIds in viewModel.SelectedWeapons)
@@ -86,7 +89,7 @@ namespace Web.Controllers
                     Console.WriteLine(weaponId);
             }
             
-            return View(viewModel);
+            return Json("Success");
         }
     }
 }
