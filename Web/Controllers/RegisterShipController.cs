@@ -14,15 +14,10 @@ namespace Web.Controllers
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
-        private readonly IEnumerable<Wing> _availableWings;
-        private readonly IEnumerable<Weapon> _availableWeapons;
 
         public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority)
         {
             _spaceTransitAuthority = spaceTransitAuthority;
-
-            _availableWings = _spaceTransitAuthority.GetWings();
-            _availableWeapons = _spaceTransitAuthority.GetWeapons();
         }
 
         public IActionResult Index()
@@ -57,10 +52,8 @@ namespace Web.Controllers
             {
                 SelectedWings = new int[viewModel.NumberOfWings],
                 SelectedWeapons = new List<int>[viewModel.NumberOfWings],
-                AvailableWings = _availableWings,
-                AvailableWeapons = _availableWeapons,
-                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull),
-                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine),
+                AvailableWings = _spaceTransitAuthority.GetWings(),
+                AvailableWeapons = _spaceTransitAuthority.GetWeapons(),
                 EngineId = viewModel.SelectedEngine,
                 HullId = viewModel.SelectedHull
             });
@@ -71,35 +64,64 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.AvailableWings = _availableWings;
-                viewModel.AvailableWeapons = _availableWeapons;
-                viewModel.Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId);
-                viewModel.Engine = _spaceTransitAuthority.GetEngines()
-                    .FirstOrDefault(engine => engine.Id == viewModel.EngineId);
+                viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
+                viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
                 return View(viewModel);
             }
 
-            var wings = new List<Wing>();
+
+            // Create ship
+            var ship = new Ship
+            {
+                Wings = new List<Wing>(),
+                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.EngineId),
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId),
+            };
 
             for (var i = 0; i < viewModel.SelectedWings.Length; i++)
             {
+                var wing = _spaceTransitAuthority.GetWings()
+                    .FirstOrDefault(selectedWing => selectedWing.Id == viewModel.SelectedWings[i]);
+
+                var newWing = new Wing
+                {
+                    Agility = wing.Agility,
+                    Energy = wing.Energy,
+                    Hardpoint = new List<Weapon>(),
+                    Id = wing.Id,
+                    Name = wing.Name,
+                    Speed = wing.Speed,
+                    Weight = wing.Weight,
+                    NumberOfHardpoints = wing.NumberOfHardpoints
+                };
+
                 var weapons = _spaceTransitAuthority.GetWeapons()
                     .Where(weapon => viewModel.SelectedWeapons[i].Contains(weapon.Id));
 
-                var wing = _spaceTransitAuthority.GetWings().FirstOrDefault(wing => wing.Id == viewModel.SelectedWings[i]);
+                foreach (var weapon in weapons)
+                    newWing.Hardpoint.Add(weapon);
 
-                wing!.Hardpoint = weapons.ToList();
-                wings.Add(wing);
+                ship.Wings.Add(newWing);
             }
+
+            // Validate
+            ship.Wings.ForEach(wing => Console.WriteLine(wing.Name + " " + wing.Hardpoint.Count + " " + wing.NumberOfHardpoints));
+            foreach (var wing in ship.Wings.Where(wing => wing.Hardpoint.Count > wing.NumberOfHardpoints))
+                ModelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
+
+            if (ModelState.ErrorCount <= 0)
+                return View("Overview", new OverviewViewModel
+                {
+                    Hull = ship.Hull,
+                    Engine = ship.Engine,
+                    Wings = ship.Wings
+                });
             
-            return View("Overview", new OverviewViewModel
-            {
-                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId),
-                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.EngineId),
-                Wings = wings
-            });
+            viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
+            viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
+            return View("Wings", viewModel);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VerifyNumberOfWings(int numberOfWings)
