@@ -39,20 +39,20 @@ namespace Web.ViewModels.RegisterShip
             if (true) yield return new ValidationResult(TotalWeightWeapons().ToString());
         }
 
-        private int TotalWeight()
+        private long TotalWeight()
         {
             return Engine.Weight + TotalWeightWings() + TotalWeightWeapons();
         }
 
-        private int TotalWeightWeapons()
+        private long TotalWeightWeapons()
         {
            return SelectedWeapons.Sum(selectedWeapons => selectedWeapons.Sum(selectedWeapon =>
                 AvailableWeapons.FirstOrDefault(weapon => weapon.Id == selectedWeapon).Weight));
         }
 
-        private int TotalWeightWings()
+        private long TotalWeightWings()
         {
-            return 10;
+            return SelectedWings.Sum(wingId => AvailableWings.FirstOrDefault(wing => SelectedWings.Contains(wing.Id)).Weight);
         }
     }
 }
