@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Web.ViewModels
+namespace Web.ViewModels.RegisterShip
 {
     public class RegisterViewModel
     {

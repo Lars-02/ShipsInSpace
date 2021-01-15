@@ -27,6 +27,9 @@
 </style>
 
 <h1>@ViewData["Title"]</h1>
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
 <form asp-controller="RegisterShip" asp-action="Wings" method="POST">
     <input asp-for="HullId">
     <input asp-for="EngineId">

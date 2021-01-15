@@ -59,37 +59,34 @@ namespace Web.Controllers
                 SelectedWeapons = new List<int>[viewModel.NumberOfWings],
                 AvailableWings = _availableWings,
                 AvailableWeapons = _availableWeapons,
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull),
+                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine),
                 EngineId = viewModel.SelectedEngine,
                 HullId = viewModel.SelectedHull
             });
         }
 
         [HttpPost]
+        public IActionResult Wings(WingsViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.AvailableWings = _availableWings;
+                viewModel.AvailableWeapons = _availableWeapons;
+                viewModel.Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId);
+                viewModel.Engine = _spaceTransitAuthority.GetEngines()
+                    .FirstOrDefault(engine => engine.Id == viewModel.EngineId);
+                return View(viewModel);
+            }
+
+            return Json("Success");
+        }
+        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VerifyNumberOfWings(int numberOfWings)
         {
             return numberOfWings % 2 == 0 ? Json(true) : Json("A ship has an even number of wings.");
-        }
-
-        [HttpPost]
-        public IActionResult Wings(WingsViewModel viewModel)
-        {
-            viewModel.AvailableWings = _availableWings;
-            viewModel.AvailableWeapons = _availableWeapons;
-            
-            if (!ModelState.IsValid)
-                return View(viewModel);
-            
-            foreach (var wingId in viewModel.SelectedWings)
-                Console.WriteLine(wingId);
-            foreach (var weaponIds in viewModel.SelectedWeapons)
-            {  
-                Console.WriteLine(weaponIds);
-                foreach (var weaponId in weaponIds)
-                    Console.WriteLine(weaponId);
-            }
-            
-            return Json("Success");
         }
     }
 }
