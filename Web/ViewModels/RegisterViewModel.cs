@@ -6,22 +6,22 @@ namespace Web.ViewModels
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(9, ErrorMessage = @"Een {0} moet {1} characters zijn.")]
-        [RegularExpression(@"^[\dA-Z]{2}-{1}[\dA-Z]{3}-{1}[\dA-Z]{2}$", ErrorMessage = @"Het {0} moet dit formaat hebben: 12-ABC-34. En mag alleen uit cijfers en letters bestaan.")]
-        [DisplayName("Kenteken")]
+        [StringLength(9, ErrorMessage = @"A {0} has to be {1} characters.")]
+        [RegularExpression(@"^[\dA-Z]{2}-{1}[\dA-Z]{3}-{1}[\dA-Z]{2}$", ErrorMessage = @"A {0} is in this format: 12-ABC-34. And can only use letters and numbers.")]
+        [DisplayName("License plate")]
         public string LicensePlate { get; set; }
         
         [Required]
-        [MinLength(8, ErrorMessage = @"Een {0} moet minimaal {1} characters zijn.")]
-        [MaxLength(32, ErrorMessage = @"Een {0} mag maximaal {1} characters zijn.")]
+        [MinLength(8, ErrorMessage = @"A {0} can be a maximum of {1} characters.")]
+        [MaxLength(32, ErrorMessage = @"A {0} can be a maximum of {1} characters.")]
         [DisplayName("Code")]
         [DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).*$",
-            ErrorMessage = @"Het wachtwoord moet aan de volgende eisen voldoen:<br>
-                                • Minimaal één kleine letter<br>
-                                • Minimaal één grote letter<br>
-                                • Tussen de 8 en 32 letters<br>
-                                • Minimaal één getal")]
+            ErrorMessage = @"The code has to follow these rules:<br>
+                                • At least one lowercase letter<br>
+                                • At least one capital letter<br>
+                                • Between 8 and 32 characters<br>
+                                • At least one number")]
         public string Code { get; set; }
     }
 }

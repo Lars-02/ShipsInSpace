@@ -1,19 +1,21 @@
-﻿@model Web.ViewModels.RegisterShip.WingsViewModel
+@model Web.ViewModels.RegisterShip.WingsViewModel
 
 @{
     ViewData["Title"] = "Choose Wings";
 }
 
 <h1>@ViewData["Title"]</h1>
-@using (Html.BeginForm())
-{
-   @for (var i = 0; i < Model.SelectedWings.Count; i++)
+@Model.Hull.Name
+<form asp-controller="RegisterShip" asp-action="Wings" method="POST">
+    <input asp-for="Hull">
+    <input asp-for="Engine">
+    
+    @for (var i = 0; i < Model.SelectedWings.Count; i++)
     {
-        
         @Html.DropDownListFor(m => m.SelectedWings[i], new SelectList(Model.AvailableWings), new {@class = "form-control"})
-        
+
         <h2>Select Weapons</h2>
     }
-    
-    <input type="submit" value="Submit" />
-}
+
+    <input type="submit" value="Submit"/>
+</form>
