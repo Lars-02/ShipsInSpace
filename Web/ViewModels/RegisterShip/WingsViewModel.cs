@@ -20,7 +20,7 @@ namespace Web.ViewModels.RegisterShip
         [HiddenInput]
         public int EngineId { get; set; }
         
-        public IEnumerable<SelectListItem> GetSelectableAvailableWings() => AvailableWings.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = w.Name});
-        public IEnumerable<SelectListItem> GetSelectableAvailableWeapons() => AvailableWeapons.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = w.Name});
+        public IEnumerable<SelectListItem> GetSelectableAvailableWings() => AvailableWings.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = $"{w.Name} -  {w.Agility},  {w.Speed},  {w.Energy},  {w.Weight},  {w.NumberOfHardpoints}"});
+        public IEnumerable<SelectListItem> GetSelectableAvailableWeapons() => AvailableWeapons.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = $"{w.Name} - {w.DamageType},  {w.EnergyDrain},  {w.Weight}"});
     }
 }
