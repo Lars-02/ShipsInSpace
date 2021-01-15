@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Data.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.ViewModels.RegisterShip
@@ -10,9 +9,9 @@ namespace Web.ViewModels.RegisterShip
         public List<WingViewModel> SelectedWings { get; set; }
         
         [HiddenInput]
-        public Hull Hull { get; set; }
+        public int HullId { get; set; }
         
         [HiddenInput]
-        public Engine Engine { get; set; }
+        public int EngineId { get; set; }
     }
 }

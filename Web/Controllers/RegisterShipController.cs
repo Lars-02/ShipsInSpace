@@ -13,10 +13,14 @@ namespace Web.Controllers
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
+        private readonly IEnumerable<WingViewModel> _availableWings;
 
         public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority)
         {
             _spaceTransitAuthority = spaceTransitAuthority;
+
+            _availableWings = _spaceTransitAuthority.GetWings().Select(wing => new WingViewModel
+                {Id = wing.Id, Name = wing.Name, WeaponSlots = wing.NumberOfHardpoints, Weight = wing.Weight});
         }
 
         public IActionResult Index()
@@ -55,11 +59,9 @@ namespace Web.Controllers
             return View("Wings", new WingsViewModel
             {
                 SelectedWings = wings,
-                AvailableWings = _spaceTransitAuthority.GetWings().Select(wing => new WingViewModel
-                    {Id = wing.Id, Name = wing.Name, WeaponSlots = wing.NumberOfHardpoints, Weight = wing.Weight}),
-                Engine = _spaceTransitAuthority.GetEngines()
-                    .FirstOrDefault(engine => engine.Id == viewModel.SelectedEngine),
-                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.SelectedHull)
+                AvailableWings = _availableWings,
+                EngineId = viewModel.SelectedEngine,
+                HullId = viewModel.SelectedHull
             });
         }
 
@@ -74,13 +76,14 @@ namespace Web.Controllers
         public IActionResult Wings(WingsViewModel wingsViewModel)
         {
             Console.WriteLine(wingsViewModel);
-            Console.WriteLine(wingsViewModel.Hull);
-            Console.WriteLine(wingsViewModel.Engine);
+            Console.WriteLine(wingsViewModel.HullId);
+            Console.WriteLine(wingsViewModel.EngineId);
             Console.WriteLine(wingsViewModel.SelectedWings);
             Console.WriteLine(wingsViewModel.SelectedWings.Count);
             foreach (var x in wingsViewModel.SelectedWings)
                 Console.WriteLine(x.Id);
 
+            wingsViewModel.AvailableWings = _availableWings;
             return View(wingsViewModel);
         }
     }
