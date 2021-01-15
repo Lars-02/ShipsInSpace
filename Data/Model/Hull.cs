@@ -6,6 +6,10 @@ namespace Data.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Agility { get; set; }
+        public int Speed { get; set; }
+        public int ColdShielding { get; set; }
+        public int HeatShielding { get; set; }
         public TakeOffMassEnum DefaultMaximumTakeOffMass { get; set; }
     }
 

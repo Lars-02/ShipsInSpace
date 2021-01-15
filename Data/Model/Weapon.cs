@@ -6,7 +6,6 @@
         public string Name { get; set; }
         public DamageTypeEnum DamageType { get; set; }
         public int EnergyDrain { get; set; }
-        public int Damage { get; set; }
         public int Weight { get; set; }
     }
 

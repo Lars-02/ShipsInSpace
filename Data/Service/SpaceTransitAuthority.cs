@@ -13,44 +13,63 @@ namespace Data.Service
         private static IEnumerable<Engine> Engines;
         public SpaceTransitAuthority()
         {
-            Hulls = new List<Hull> {
-                new Hull {
-                    Id = 1,
-                    Name = "Zenith",
-                    DefaultMaximumTakeOffMass = TakeOffMassEnum.LightFighter
-                },
-                new Hull {
-                    Id = 2,
-                    Name = "Neptunus",
-                    DefaultMaximumTakeOffMass = TakeOffMassEnum.Tank
-                },
-                new Hull {
-                    Id = 3,
-                    Name = "Catalyst",
-                    DefaultMaximumTakeOffMass = TakeOffMassEnum.MediumFighter
-                },
-                new Hull {
-                    Id = 4,
-                    Name = "RaceWing",
-                    DefaultMaximumTakeOffMass = TakeOffMassEnum.Interceptor
-                }};
-            Weapons = new List<Weapon> { 
-                new Weapon {
+           Hulls = new List<Hull> { new Hull {
+           Id = 1,
+           Name = "Zenith",
+           Agility = 135,
+           Speed = 120,
+           ColdShielding = 0,
+           HeatShielding = 50,
+           DefaultMaximumTakeOffMass = TakeOffMassEnum.LightFighter
+       },
+        new Hull
+        {
+            Id = 2,
+            Name = "Neptunus",
+            Agility = 100,
+            Speed = 100,
+            ColdShielding = 50,
+            HeatShielding = 0,
+            DefaultMaximumTakeOffMass = TakeOffMassEnum.Tank
+        },
+        new Hull
+        {
+            Id = 3,
+            Name = "Catalyst",
+            Agility = 115,
+            Speed = 200,
+            ColdShielding = 0,
+            HeatShielding = 50,
+            DefaultMaximumTakeOffMass = TakeOffMassEnum.MediumFighter
+        },
+        new Hull
+        {
+            Id = 4,
+            Name = "RaceWing",
+            Agility = 205,
+            Speed = 150,
+            ColdShielding = 25,
+            HeatShielding = 25,
+            DefaultMaximumTakeOffMass = TakeOffMassEnum.Interceptor
+        }};
+           Weapons = new List<Weapon> { new Weapon {
                     Id = 1,
                     Name = "Fury Cannon",
-                    Damage = 34,
+                    Weight = 76,
+					DamageType = DamageTypeEnum.Heat,
                     EnergyDrain = 52
                 },
                 new Weapon {
                     Id = 2,
                     Name= "Crusher",
-                    Damage = 21,
+                    Weight=89,
+					DamageType= DamageTypeEnum.Gravity,
                     EnergyDrain = 56
                 },
                 new Weapon {
                     Id = 3,
                     Name= "Flamethrower",
-                    Damage = 18,
+                    Weight = 30,
                     DamageType = DamageTypeEnum.Heat,
                     EnergyDrain = 74
                 },
@@ -58,91 +77,91 @@ namespace Data.Service
                 {
                     Id = 4,
                     Name = "Freeze Ray",
-                    Damage = 24,
+                    Weight = 24,
                     DamageType = DamageTypeEnum.Cold,
                     EnergyDrain = 52
                 },
                 new Weapon {
                     Id= 5,
                     Name= "Shockwave",
-                    Damage= 18,
+                    Weight= 105,
                     DamageType = DamageTypeEnum.Kinetic,
                     EnergyDrain= 47
                 },
                 new Weapon {
                     Id= 6,
                     Name= "Gauss Gun",
-                    Damage = 31,
+                    Weight = 110,
                     DamageType = DamageTypeEnum.Kinetic,
                     EnergyDrain=52
                 },
                 new Weapon {
                     Id=7,
                     Name="Hailstorm",
-                    Damage=21,
+                    Weight=34,
                     DamageType= DamageTypeEnum.Cold,
                     EnergyDrain= 56
                 },
                 new Weapon {
                     Id=8,
                     Name= "Ice Barrage",
-                    Damage= 19,
+                    Weight= 35,
                     DamageType= DamageTypeEnum.Cold,
                     EnergyDrain=41
                 },
                 new Weapon {
                     Id=9,
                     Name= "Imploder",
-                    Damage = 27,
+                    Weight = 270,
                     DamageType= DamageTypeEnum.Gravity,
                     EnergyDrain=43
                 },
                 new Weapon {
                     Id= 10,
                     Name= "Levitator",
-                    Damage=21,
+                    Weight=59,
                     EnergyDrain=56,
                     DamageType = DamageTypeEnum.Statis
                 },
                 new Weapon {
                     Id= 11,
                     Name= "Shredder",
-                    Damage= 10,
+                    Weight= 75,
                     EnergyDrain= 13,
                     DamageType = DamageTypeEnum.Kinetic
                 },
                 new Weapon {
                     Id= 12,
                     Name= "Tidal Wave",
-                    Damage= 18,
+                    Weight= 18,
                     DamageType= DamageTypeEnum.Statis,
                     EnergyDrain=74
                 },
                 new Weapon{
                     Id= 13,
                     Name="Volcano",
-                    Damage= 10,
+                    Weight= 80,
                     DamageType = DamageTypeEnum.Heat,
                     EnergyDrain = 10,
                 },
                 new Weapon {
                     Id = 14,
                     Name= "Nullifier",
-                    Damage= 23,
+                    Weight= 23,
                     DamageType= DamageTypeEnum.Gravity,
                     EnergyDrain = 43
                 }};
-            Wings = new List<Wing> {
-                new Wing {Id = 1, Name = "Blade",  Energy = 0, WeaponSlots = 2, Weight = 275 },
-                new Wing {Id = 2, Name = "Horizon", Energy = 0, WeaponSlots = 1, Weight = 150 },
-                new Wing {Id = 3, Name = "D-Fence",  Energy = 0, WeaponSlots = 3, Weight = 300 },
-                new Wing {Id = 4, Name = "O-Fence", Energy = 15, WeaponSlots = 2, Weight = 250 },
-                new Wing {Id = 5, Name = "Racer",  Energy = 5, WeaponSlots = 1, Weight = 175 },
+            Wings = new List<Wing> { 
+                new Wing {Id = 1, Name = "Blade", Agility = 0, Speed = 15, Energy = 0, NumberOfHardpoints = 2, Weight = 275 },
+                new Wing {Id = 2, Name = "Horizon", Agility = 7, Speed = 8, Energy = 0, NumberOfHardpoints = 1, Weight = 150 },
+                new Wing {Id = 3, Name = "D-Fence", Agility = 0, Speed = 0, Energy = 0, NumberOfHardpoints = 3, Weight = 300 },
+                new Wing {Id = 4, Name = "O-Fence", Agility = 0, Speed = 0, Energy = 15, NumberOfHardpoints = 2, Weight = 250 },
+                new Wing {Id = 5, Name = "Raceing", Agility = 15, Speed = 15, Energy = 0, NumberOfHardpoints = 1, Weight = 175 },
             };
-            Engines = new List<Engine> {
-                new Engine {Id = 1, Name = "Galaxy Class", Energy = 150 },
-                new Engine {Id = 2, Name = "Intrepid Class", Energy = 350 },
-                new Engine {Id = 3, Name = "Constellation Class", Energy = 200 }
+            Engines = new List<Engine> { 
+                new Engine {Id = 1, Name = "Galaxy Class", Energy = 150, Weight = 150 },
+                new Engine {Id = 2, Name = "Intrepid Class", Energy = 350, Weight = 350 },
+                new Engine {Id = 3, Name = "Constellation Class", Energy = 200, Weight= 200 }
             };
         }
 
