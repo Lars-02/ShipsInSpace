@@ -76,20 +76,29 @@ namespace Web.Controllers
         {
             viewModel.AvailableWings = _availableWings;
             viewModel.AvailableWeapons = _availableWeapons;
-            
+
             if (!ModelState.IsValid)
                 return View(viewModel);
-            
-            foreach (var wingId in viewModel.SelectedWings)
-                Console.WriteLine(wingId);
-            foreach (var weaponIds in viewModel.SelectedWeapons)
-            {  
-                Console.WriteLine(weaponIds);
-                foreach (var weaponId in weaponIds)
-                    Console.WriteLine(weaponId);
+
+            var wings = new List<Wing>();
+
+            for (var i = 0; i < viewModel.SelectedWings.Length; i++)
+            {
+                var weapons = _spaceTransitAuthority.GetWeapons()
+                    .Where(weapon => viewModel.SelectedWeapons[i].Contains(weapon.Id));
+
+                var wing = _spaceTransitAuthority.GetWings().FirstOrDefault(wing => wing.Id == viewModel.SelectedWings[i]);
+
+                wing!.Hardpoint = weapons.ToList();
+                wings.Add(wing);
             }
             
-            return Json("Success");
+            return View("Overview", new OverviewViewModel
+            {
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId),
+                Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.EngineId),
+                Wings = wings
+            });
         }
     }
 }
