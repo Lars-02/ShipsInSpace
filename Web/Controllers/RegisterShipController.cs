@@ -15,12 +15,14 @@ namespace Web.Controllers
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
         private readonly IEnumerable<Wing> _availableWings;
+        private readonly IEnumerable<Weapon> _availableWeapons;
 
         public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority)
         {
             _spaceTransitAuthority = spaceTransitAuthority;
 
             _availableWings = _spaceTransitAuthority.GetWings();
+            _availableWeapons = _spaceTransitAuthority.GetWeapons();
         }
 
         public IActionResult Index()
@@ -51,15 +53,12 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var wings = new List<int>();
-            
-            for (var i = 0; i < viewModel.NumberOfWings; i++)
-                wings.Add(0);
-            
             return View("Wings", new WingsViewModel
             {
-                SelectedWings = wings,
+                SelectedWings = new int[viewModel.NumberOfWings],
+                SelectedWeapons = new List<int>[viewModel.NumberOfWings],
                 AvailableWings = _availableWings,
+                AvailableWeapons = _availableWeapons,
                 EngineId = viewModel.SelectedEngine,
                 HullId = viewModel.SelectedHull
             });
@@ -76,10 +75,17 @@ namespace Web.Controllers
         public IActionResult Wings(WingsViewModel viewModel)
         {
             viewModel.AvailableWings = _availableWings;
+            viewModel.AvailableWeapons = _availableWeapons;
             
-            foreach (var x in viewModel.SelectedWings)
-                Console.WriteLine(x);
-
+            foreach (var wingId in viewModel.SelectedWings)
+                Console.WriteLine(wingId);
+            foreach (var weaponIds in viewModel.SelectedWeapons)
+            {  
+                Console.WriteLine(weaponIds);
+                foreach (var weaponId in weaponIds)
+                    Console.WriteLine(weaponId);
+            }
+            
             return View(viewModel);
         }
     }

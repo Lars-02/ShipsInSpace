@@ -9,8 +9,10 @@ namespace Web.ViewModels.RegisterShip
     public class WingsViewModel
     {
         public IEnumerable<Wing> AvailableWings { get; set; }
+        public IEnumerable<Weapon> AvailableWeapons { get; set; }
 
-        public List<int> SelectedWings { get; set; }
+        public int[] SelectedWings { get; set; }
+        public List<int>[] SelectedWeapons { get; set; }
         
         [HiddenInput]
         public int HullId { get; set; }
@@ -18,9 +20,7 @@ namespace Web.ViewModels.RegisterShip
         [HiddenInput]
         public int EngineId { get; set; }
         
-        public IEnumerable<SelectListItem> GetSelectableAvailableWings()
-        {
-            return AvailableWings.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = w.Name});
-        }
+        public IEnumerable<SelectListItem> GetSelectableAvailableWings() => AvailableWings.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = w.Name});
+        public IEnumerable<SelectListItem> GetSelectableAvailableWeapons() => AvailableWeapons.Select(w => new SelectListItem {Value = w.Id.ToString(), Text = w.Name});
     }
 }
