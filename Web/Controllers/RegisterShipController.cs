@@ -122,6 +122,7 @@ namespace Web.Controllers
 
                 ship.Wings.Add(newWing);
             }
+            return ship;
         }
 
         [HttpPost]
