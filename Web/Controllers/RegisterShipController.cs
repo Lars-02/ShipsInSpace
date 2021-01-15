@@ -5,6 +5,7 @@ using Data.Service;
 using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.RegisterShip;
 using System.Diagnostics;
+using Data.Model;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.ViewModels;
 
@@ -13,14 +14,13 @@ namespace Web.Controllers
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
-        private readonly IEnumerable<WingViewModel> _availableWings;
+        private readonly IEnumerable<Wing> _availableWings;
 
         public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority)
         {
             _spaceTransitAuthority = spaceTransitAuthority;
 
-            _availableWings = _spaceTransitAuthority.GetWings().Select(wing => new WingViewModel
-                {Id = wing.Id, Name = wing.Name, WeaponSlots = wing.NumberOfHardpoints, Weight = wing.Weight});
+            _availableWings = _spaceTransitAuthority.GetWings();
         }
 
         public IActionResult Index()
@@ -51,10 +51,10 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var wings = new List<WingViewModel>();
+            var wings = new List<int>();
             
             for (var i = 0; i < viewModel.NumberOfWings; i++)
-                wings.Add(new WingViewModel());
+                wings.Add(0);
             
             return View("Wings", new WingsViewModel
             {
@@ -73,18 +73,14 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Wings(WingsViewModel wingsViewModel)
+        public IActionResult Wings(WingsViewModel viewModel)
         {
-            Console.WriteLine(wingsViewModel);
-            Console.WriteLine(wingsViewModel.HullId);
-            Console.WriteLine(wingsViewModel.EngineId);
-            Console.WriteLine(wingsViewModel.SelectedWings);
-            Console.WriteLine(wingsViewModel.SelectedWings.Count);
-            foreach (var x in wingsViewModel.SelectedWings)
-                Console.WriteLine(x.Id);
+            viewModel.AvailableWings = _availableWings;
+            
+            foreach (var x in viewModel.SelectedWings)
+                Console.WriteLine(x);
 
-            wingsViewModel.AvailableWings = _availableWings;
-            return View(wingsViewModel);
+            return View(viewModel);
         }
     }
 }

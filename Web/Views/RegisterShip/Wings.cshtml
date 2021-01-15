@@ -5,16 +5,16 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-@Model.HullId
 <form asp-controller="RegisterShip" asp-action="Wings" method="POST">
     <input asp-for="HullId">
     <input asp-for="EngineId">
     
     @for (var i = 0; i < Model.SelectedWings.Count; i++)
     {
-        @Html.DropDownListFor(m => m.SelectedWings[i], new SelectList(Model.AvailableWings), new {@class = "form-control"})
+        @Html.DropDownListFor(m => m.SelectedWings[i], new SelectList(Model.GetSelectableAvailableWings(), "Value" , "Text"), new {@class = "form-control"})
 
-        //<h2>Select Weapons</h2>
+        <h2>Select Weapons</h2>
+        
     }
 
     <input type="submit" value="Submit"/>
