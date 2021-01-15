@@ -69,8 +69,27 @@ namespace Web.Controllers
                 return View(viewModel);
             }
 
+            var ship = CreateShip(viewModel);
+            
+            ship.Wings.ForEach(wing => Console.WriteLine(wing.Name + " " + wing.Hardpoint.Count + " " + wing.NumberOfHardpoints));
+            foreach (var wing in ship.Wings.Where(wing => wing.Hardpoint.Count > wing.NumberOfHardpoints))
+                ModelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
 
-            // Create ship
+            if (ModelState.ErrorCount <= 0)
+                return View("Overview", new OverviewViewModel
+                {
+                    Hull = ship.Hull,
+                    Engine = ship.Engine,
+                    Wings = ship.Wings
+                });
+            
+            viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
+            viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
+            return View("Wings", viewModel);
+        }
+
+        private Ship CreateShip(WingsViewModel viewModel)
+        {
             var ship = new Ship
             {
                 Wings = new List<Wing>(),
@@ -103,23 +122,6 @@ namespace Web.Controllers
 
                 ship.Wings.Add(newWing);
             }
-
-            // Validate
-            ship.Wings.ForEach(wing => Console.WriteLine(wing.Name + " " + wing.Hardpoint.Count + " " + wing.NumberOfHardpoints));
-            foreach (var wing in ship.Wings.Where(wing => wing.Hardpoint.Count > wing.NumberOfHardpoints))
-                ModelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
-
-            if (ModelState.ErrorCount <= 0)
-                return View("Overview", new OverviewViewModel
-                {
-                    Hull = ship.Hull,
-                    Engine = ship.Engine,
-                    Wings = ship.Wings
-                });
-            
-            viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
-            viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
-            return View("Wings", viewModel);
         }
 
         [HttpPost]
