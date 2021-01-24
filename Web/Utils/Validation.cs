@@ -17,6 +17,7 @@ namespace Web.Utils
             ValidateNumberOfWeapons();
             ValidateHullWeight();
             ValidateEnergyConsumption();
+            ValidateImploderWeapons();
         }
         
         private static void ValidateNumberOfWeapons()
@@ -35,6 +36,12 @@ namespace Web.Utils
         {
             if (Calculations.GetEnergyConsumption(_ship.Wings.SelectMany(wing => wing.Hardpoint)) > _ship.Energy)
                 _modelState.AddModelError("EnergyConsumptionOverdraft", "The energy consumption of the ship is too high");
+        }
+
+        private static void ValidateImploderWeapons()
+        {
+            if (_ship.Engine.Id == 2 && _ship.Wings.Any(wing => wing.Hardpoint.Any(weapon => weapon.Id == 9)))
+                _modelState.AddModelError("ImplosionDanger", "The combination of Imploder weapon and Intrepid Class engine is not allowed");
         }
     }
 }
