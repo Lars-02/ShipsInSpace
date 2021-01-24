@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web.ViewModels.RegisterShip;
 using System.Diagnostics;
 using Data.Model;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.ViewModels;
 
@@ -71,9 +72,7 @@ namespace Web.Controllers
 
             var ship = CreateShip(viewModel);
             
-            ship.Wings.ForEach(wing => Console.WriteLine(wing.Name + " " + wing.Hardpoint.Count + " " + wing.NumberOfHardpoints));
-            foreach (var wing in ship.Wings.Where(wing => wing.Hardpoint.Count > wing.NumberOfHardpoints))
-                ModelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
+            ValidateNumberOfWeapons(ship.Wings);
 
             if (ModelState.ErrorCount <= 0)
                 return View("Overview", new OverviewViewModel
@@ -86,6 +85,12 @@ namespace Web.Controllers
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
             viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
             return View("Wings", viewModel);
+        }
+
+        private void ValidateNumberOfWeapons(IEnumerable<Wing> wings)
+        {
+            foreach (var wing in wings.Where(wing => wing.Hardpoint.Count > wing.NumberOfHardpoints))
+                ModelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
         }
 
         private Ship CreateShip(WingsViewModel viewModel)
