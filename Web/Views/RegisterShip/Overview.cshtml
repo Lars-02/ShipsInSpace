@@ -18,28 +18,28 @@
                         <span class="font-weight-bold">Pilot's license: </span>TODO! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Default Maximum Takeoff Mass: </span>@((int) Model.Hull.DefaultMaximumTakeOffMass)
+                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Total Weight: </span>@Model.TotalWeight
+                        <span class="font-weight-bold">Total Weight: </span>@Model.Weight
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Energy Capacity: </span>@Model.Engine.Energy
+                        <span class="font-weight-bold">Energy Capacity: </span>@Model.Ship.Engine.Energy
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Total Energy Usage: </span>@Model.TotalEnergyUsage
+                        <span class="font-weight-bold">Total Energy Usage: </span>@Model.Ship.Energy
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Total Agility: </span>@Model.TotalAgility
+                        <span class="font-weight-bold">Total Agility: </span>@Model.Ship.Agility
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Total Speed: </span>@Model.TotalSpeed
+                        <span class="font-weight-bold">Total Speed: </span>@Model.Ship.Speed
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Hull.ColdShielding
+                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Ship.Hull.ColdShielding
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Hull.HeatShielding
+                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
                     </li>
                 </ul>
             </div>
@@ -51,24 +51,24 @@
             <div class="card mb-4 fixed-card-size">
                 @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
                 <div class="card-body pt-1 pb-2">
-                    <h3 class="card-title">@Model.Hull.Name</h3>
-                    <p class="card-text">@Model.Hull.DefaultMaximumTakeOffMass</p>
+                    <h3 class="card-title">@Model.Ship.Hull.Name</h3>
+                    <p class="card-text">@Model.Ship.Hull.DefaultMaximumTakeOffMass</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Agility: </span>@Model.Hull.Agility
+                        <span class="font-weight-bold">Agility: </span>@Model.Ship.Hull.Agility
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Speed: </span>@Model.Hull.Speed
+                        <span class="font-weight-bold">Speed: </span>@Model.Ship.Hull.Speed
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Hull.ColdShielding
+                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Ship.Hull.ColdShielding
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Hull.HeatShielding
+                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Default Maximum Takeoff Mass: </span>@((int) Model.Hull.DefaultMaximumTakeOffMass)
+                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
                     </li>
                 </ul>
             </div>
@@ -78,15 +78,15 @@
             <div class="card mb-4 fixed-card-size">
                 @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
                 <div class="card-body pt-1 pb-2">
-                    <h3 class="card-title">@Model.Engine.Name</h3>
+                    <h3 class="card-title">@Model.Ship.Engine.Name</h3>
                     <p class="card-text">Engine</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Energy: </span>@Model.Engine.Energy
+                        <span class="font-weight-bold">Energy: </span>@Model.Ship.Engine.Energy
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Weight: </span>@Model.Engine.Weight
+                        <span class="font-weight-bold">Default Weight: </span>@Model.Ship.Engine.Weight
                     </li>
                 </ul>
             </div>
@@ -94,7 +94,7 @@
     </div>
     <h2>Wings</h2>
     <div class="row">
-        @foreach (var wing in Model.Wings)
+        @foreach (var wing in Model.Ship.Wings)
         {
             <div class="col-md-4">
                 <div class="card mb-4 fixed-card-size">
@@ -117,7 +117,7 @@
                             <span class="font-weight-bold">Heat Shielding: </span>@wing.Speed
                         </li>
                         <li class="list-group-item py-2">
-                            <span class="font-weight-bold">Default Maximum Takeoff Mass: </span>@wing.Weight
+                            <span class="font-weight-bold">Default Weight: </span>@wing.Weight
                         </li>
                         <li class="list-group-item py-2">
                             <h4 class="font-weight-bold">Weapons: </h4>

@@ -76,9 +76,7 @@ namespace Web.Controllers
             if (ModelState.ErrorCount <= 0)
                 return View("Overview", new OverviewViewModel
                 {
-                    Hull = ship.Hull,
-                    Engine = ship.Engine,
-                    Wings = ship.Wings
+                    Ship = ship
                 });
 
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();

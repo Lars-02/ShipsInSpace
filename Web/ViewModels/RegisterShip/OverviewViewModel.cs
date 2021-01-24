@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Data.Model;
+﻿using Data.Model;
+using Web.Utils;
 
 namespace Web.ViewModels.RegisterShip
 {
     public class OverviewViewModel
     {
-        public Hull Hull { get; set; }
-        public Engine Engine { get; set; }
-        public IEnumerable<Wing> Wings { get; set; }
+        public Ship Ship;
 
-        public long TotalWeight => Engine.Weight + Wings.Sum(wing => wing.Weight + wing.Hardpoint.Sum(weapon => weapon.Weight));
-
-        public long TotalEnergyUsage => Wings.Sum(wing => wing.Hardpoint.Sum(weapon => weapon.EnergyDrain));
-        public long TotalAgility => Wings.Sum(wing => wing.Agility);
-        public long TotalSpeed => Wings.Sum(wing => wing.Speed);
+        public double Weight => Calculations.GetShipWeight(Ship);
     }
 }
