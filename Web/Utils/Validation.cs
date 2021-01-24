@@ -21,6 +21,7 @@ namespace Web.Utils
             ValidateEnergyConsumption();
             ValidateImploderWeapons();
             ValidateCombinationWeapons();
+            ValidateNullifierWeapon();
         }
         
         private static void ValidateNumberOfWeapons()
@@ -53,6 +54,12 @@ namespace Web.Utils
                 _modelState.AddModelError("HeatStress", "The combination of heat and cold weapons is not allowed");
             if (_weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Statis) && _weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Gravity))
                 _modelState.AddModelError("ForceStress", "The combination of statis and gravity weapons is not allowed");
+        }
+
+        private static void ValidateNullifierWeapon()
+        {
+            foreach (var wing in _ship.Wings.Where(wing => wing.Hardpoint.Any(weapon => weapon.Id == 14) && wing.Hardpoint.Count < 2))
+                _modelState.AddModelError("LoneNullifier", "The Nullifier can't be the only weapon on " + wing.Name);
         }
     }
 }
