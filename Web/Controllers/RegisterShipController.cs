@@ -110,11 +110,15 @@ namespace Web.Controllers
                     NumberOfHardpoints = wing.NumberOfHardpoints
                 };
 
-                var weapons = _spaceTransitAuthority.GetWeapons()
-                    .Where(weapon => viewModel.SelectedWeapons[i].Contains(weapon.Id));
 
-                foreach (var weapon in weapons)
-                    newWing.Hardpoint.Add(weapon);
+                if (viewModel.SelectedWeapons != null && i < viewModel.SelectedWeapons.Length && viewModel.SelectedWeapons[i] != null)
+                {
+                    var weapons = _spaceTransitAuthority.GetWeapons()
+                        .Where(weapon => viewModel.SelectedWeapons[i].Contains(weapon.Id));
+
+                    foreach (var weapon in weapons)
+                        newWing.Hardpoint.Add(weapon);
+                }
 
                 ship.Wings.Add(newWing);
             }
