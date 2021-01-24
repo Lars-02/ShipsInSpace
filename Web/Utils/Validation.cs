@@ -9,15 +9,18 @@ namespace Web.Utils
     {
         private static ModelStateDictionary _modelState;
         private static Ship _ship;
+        private static IEnumerable<Weapon> _weapons;
         
         public static void ValidateShip(ModelStateDictionary modelState, Ship ship)
         {
             _modelState = modelState;
             _ship = ship;
+            _weapons = _ship.Wings.SelectMany(wing => wing.Hardpoint);
             ValidateNumberOfWeapons();
             ValidateHullWeight();
             ValidateEnergyConsumption();
             ValidateImploderWeapons();
+            ValidateCombinationWeapons();
         }
         
         private static void ValidateNumberOfWeapons()
@@ -34,14 +37,22 @@ namespace Web.Utils
 
         private static void ValidateEnergyConsumption()
         {
-            if (Calculations.GetEnergyConsumption(_ship.Wings.SelectMany(wing => wing.Hardpoint)) > _ship.Energy)
+            if (Calculations.GetEnergyConsumption(_weapons) > _ship.Energy)
                 _modelState.AddModelError("EnergyConsumptionOverdraft", "The energy consumption of the ship is too high");
         }
 
         private static void ValidateImploderWeapons()
         {
-            if (_ship.Engine.Id == 2 && _ship.Wings.Any(wing => wing.Hardpoint.Any(weapon => weapon.Id == 9)))
+            if (_ship.Engine.Id == 2 && _weapons.Any(weapon => weapon.Id == 9))
                 _modelState.AddModelError("ImplosionDanger", "The combination of Imploder weapon and Intrepid Class engine is not allowed");
+        }
+
+        private static void ValidateCombinationWeapons()
+        {
+            if (_weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Heat) && _weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Cold))
+                _modelState.AddModelError("HeatStress", "The combination of heat and cold weapons is not allowed");
+            if (_weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Statis) && _weapons.Any(weapon => weapon.DamageType == DamageTypeEnum.Gravity))
+                _modelState.AddModelError("ForceStress", "The combination of statis and gravity weapons is not allowed");
         }
     }
 }
