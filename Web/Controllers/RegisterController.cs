@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Web.Models;
-using Web.ViewModels;
-using Web.ViewModels.RegisterShip;
+ using System.Diagnostics;
+ using Microsoft.AspNetCore.Mvc;
+ using Web.ViewModels;
+ using Web.ViewModels.RegisterShip;
 
-namespace Web.Controllers
+ namespace Web.Controllers
 {
     public class RegisterController : Controller
     {
