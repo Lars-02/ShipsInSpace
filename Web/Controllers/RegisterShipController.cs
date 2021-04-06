@@ -90,7 +90,7 @@ namespace Web.Controllers
             {
                 Wings = new List<Wing>(),
                 Engine = _spaceTransitAuthority.GetEngines().FirstOrDefault(engine => engine.Id == viewModel.EngineId),
-                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId),
+                Hull = _spaceTransitAuthority.GetHulls().FirstOrDefault(hull => hull.Id == viewModel.HullId)
             };
 
             for (var i = 0; i < viewModel.SelectedWings.Length; i++)
@@ -111,7 +111,8 @@ namespace Web.Controllers
                 };
 
 
-                if (viewModel.SelectedWeapons != null && i < viewModel.SelectedWeapons.Length && viewModel.SelectedWeapons[i] != null)
+                if (viewModel.SelectedWeapons != null && i < viewModel.SelectedWeapons.Length &&
+                    viewModel.SelectedWeapons[i] != null)
                 {
                     var weapons = _spaceTransitAuthority.GetWeapons()
                         .Where(weapon => viewModel.SelectedWeapons[i].Contains(weapon.Id));

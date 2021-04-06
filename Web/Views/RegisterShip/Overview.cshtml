@@ -1,0 +1,155 @@
+﻿@model Web.ViewModels.RegisterShip.OverviewViewModel
+
+@{
+    ViewData["Title"] = "Overview";
+}
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4 fixed-card-size">
+                @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
+                <div class="card-body pt-1 pb-2">
+                    <h3 class="card-title">Totals</h3>
+                    <p class="card-text">General statistics</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Pilot's license: </span>TODO! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Total Weight: </span>@Model.Weight
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Energy Capacity: </span>@Model.Ship.Energy
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Total Energy Usage: </span>@Model.EnergyConsumption
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Total Agility: </span>@Model.Ship.Agility
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Total Speed: </span>@Model.Ship.Speed
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Ship.Hull.ColdShielding
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2>Hull</h2>
+            <div class="card mb-4 fixed-card-size">
+                @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
+                <div class="card-body pt-1 pb-2">
+                    <h3 class="card-title">@Model.Ship.Hull.Name</h3>
+                    <p class="card-text">@Model.Ship.Hull.DefaultMaximumTakeOffMass</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Agility: </span>@Model.Ship.Hull.Agility
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Speed: </span>@Model.Ship.Hull.Speed
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Ship.Hull.ColdShielding
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <h2>Engine</h2>
+            <div class="card mb-4 fixed-card-size">
+                @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
+                <div class="card-body pt-1 pb-2">
+                    <h3 class="card-title">@Model.Ship.Engine.Name</h3>
+                    <p class="card-text">Engine</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Energy: </span>@Model.Ship.Engine.Energy
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Default Weight: </span>@Model.Ship.Engine.Weight
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2>Wings</h2>
+    <div class="row">
+        @foreach (var wing in Model.Ship.Wings)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 fixed-card-size">
+                    @* <img src="@Model.Helmet.ImageUrl" class="my-1 img-size" alt="..."> *@
+                    <div class="card-body pt-1 pb-2">
+                        <h3 class="card-title">@wing.Name</h3>
+                        <p class="card-text">Wing</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item py-2">
+                            <span class="font-weight-bold">Agility: </span>@wing.Agility
+                        </li>
+                        <li class="list-group-item py-2">
+                            <span class="font-weight-bold">Speed: </span>@wing.Energy
+                        </li>
+                        <li class="list-group-item py-2">
+                            <span class="font-weight-bold">Cold Shielding: </span>@wing.NumberOfHardpoints
+                        </li>
+                        <li class="list-group-item py-2">
+                            <span class="font-weight-bold">Heat Shielding: </span>@wing.Speed
+                        </li>
+                        <li class="list-group-item py-2">
+                            <span class="font-weight-bold">Default Weight: </span>@wing.Weight
+                        </li>
+                        @if (wing.Hardpoint.Count > 0)
+                        {
+                            <li class="list-group-item py-2">
+                                <h4 class="font-weight-bold">Weapons: </h4>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var weapon in wing.Hardpoint)
+                                    {
+                                        <li>
+                                            <h5 class="">@weapon.Name</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item py-2">
+                                                    <span class="font-weight-bold">Name: </span>@weapon.Name
+                                                </li>
+                                                <li class="list-group-item py-2">
+                                                    <span class="font-weight-bold">Weight: </span>@weapon.Weight
+                                                </li>
+                                                <li class="list-group-item py-2">
+                                                    <span class="font-weight-bold">Damage Type: </span>@weapon.DamageType
+                                                </li>
+                                                <li class="list-group-item py-2">
+                                                    <span class="font-weight-bold">Energy Drain: </span>@weapon.EnergyDrain
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

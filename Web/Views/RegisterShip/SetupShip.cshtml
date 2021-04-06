@@ -1,0 +1,24 @@
+﻿@model Web.ViewModels.RegisterShip.RegisterShipViewModel
+@await Html.PartialAsync("_ValidationScriptsPartial")
+
+@{
+    ViewData["Title"] = "Setup ship";
+}
+
+<form asp-controller="RegisterShip" asp-action="SetupShip" method="POST">
+    @Html.AntiForgeryToken()
+    <div class="form-group d-flex flex-column">
+        <label class="mb-0" asp-for="@Model.SelectedEngine"></label>
+        @Html.DropDownListFor(m => m.SelectedEngine, Model.Engines, new {@class = "form-control"})
+    </div>
+    <div class="form-group d-flex flex-column">
+        <label class="mb-0" asp-for="@Model.SelectedHull"></label>
+        @Html.DropDownListFor(m => m.SelectedHull, Model.Hulls, new {@class = "form-control"})
+    </div>
+    <div class="form-group d-flex flex-column">
+        <label asp-for="@Model.NumberOfWings"></label>
+        <input asp-for="@Model.NumberOfWings" class="form-control">
+        <span asp-validation-for="@Model.NumberOfWings" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

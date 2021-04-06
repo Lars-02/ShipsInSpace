@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -78,9 +78,10 @@ namespace Web.Utils
 
             if (energyDrainWing.Count <= 0)
                 return;
-            
+
             if (energyDrainWing.Max() - energyDrainWing.Min() > 35)
-                _modelState.AddModelError("KineticDifference", "The energy drain of kinetic weapons on different wings can't be more than 35");
+                _modelState.AddModelError("KineticDifference",
+                    "The energy drain of kinetic weapons on different wings can't be more than 35");
         }
     }
 }
