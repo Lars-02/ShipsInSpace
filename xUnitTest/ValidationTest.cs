@@ -5,6 +5,7 @@ using Data.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Moq;
 using Web.Utils;
+using Web.Utils.Interfaces;
 using Xunit;
 using xUnitTest.Factories;
 
@@ -12,17 +13,22 @@ namespace xUnitTest
 {
     public class ValidShipTest
     {
-        private readonly Calculations _calculations;
+        private readonly Mock<Calculations> _calculations;
 
         public ValidShipTest()
         {
-            _calculations = new Calculations();
+            _calculations = new Mock<Calculations>();
         }
 
         private bool Validate(IMock<Ship> ship, string errorMessage)
         {
+            return Validate(ship, errorMessage, _calculations);
+        }
+
+        private bool Validate(IMock<Ship> ship, string errorMessage, IMock<ICalculations> calculations)
+        {
             var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, _calculations);
+            Validation.ValidateShip(modelState, ship.Object, calculations.Object);
             var valid = !modelState.TryGetValue(errorMessage, out _);
 
             return valid;
@@ -39,9 +45,8 @@ namespace xUnitTest
             var calculations = new Mock<Calculations>();
             
             calculations.Setup(c => c.GetShipWeight(ship.Object)).Returns((int) ship.Object.Hull.DefaultMaximumTakeOffMass+weightModifier);
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, calculations.Object);
-            var valid = !modelState.TryGetValue("CapacityOverload", out _);
+            
+            var valid = Validate(ship, "CapacityOverload", calculations);
 
             if (weightModifier <= 0)
                 Assert.True(valid);
@@ -61,9 +66,8 @@ namespace xUnitTest
             var calculations = new Mock<Calculations>();
             
             calculations.Setup(c => c.GetEnergyConsumption(ship.Object)).Returns(50+energyModifier);
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, calculations.Object);
-            var valid = !modelState.TryGetValue("EnergyConsumptionOverdraft", out _);
+
+            var valid = Validate(ship, "EnergyConsumptionOverdraft", calculations);
 
             if (energyModifier <= 0)
                 Assert.True(valid);
