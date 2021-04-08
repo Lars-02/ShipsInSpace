@@ -17,6 +17,15 @@ namespace xUnitTest
         {
             _calculations = new Calculations();
         }
+
+        private bool Validate(IMock<Ship> ship, string errorMessage)
+        {
+            var modelState = new ModelStateDictionary();
+            Validation.ValidateShip(modelState, ship.Object, _calculations);
+            var valid = !modelState.TryGetValue(errorMessage, out _);
+
+            return valid;
+        }
         
         [Theory]
         [InlineData(-1)]
@@ -79,9 +88,7 @@ namespace xUnitTest
 
             ship.Setup(s => s.Wings).Returns(wings);
 
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, _calculations);
-            var valid = !modelState.TryGetValue("OddWings", out _);
+            var valid = Validate(ship, "OddWings");
             
             if (amount % 2 == 0)
                 Assert.True(valid);
@@ -108,9 +115,7 @@ namespace xUnitTest
             engine.Setup(e => e.Id).Returns(engineId);
             weapon.Setup(w => w.Id).Returns(weaponId);
 
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, _calculations);
-            var valid = !modelState.TryGetValue("ImplosionDanger", out _);
+            var valid = Validate(ship, "ImplosionDanger");
             
             if (engineId == 2 && weaponId == 9)
                 Assert.False(valid);
@@ -133,10 +138,8 @@ namespace xUnitTest
             wing.Setup(w => w.Hardpoint).Returns(weapons);
 
             ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
-            
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, _calculations);
-            var valid = !modelState.TryGetValue("WeaponOverload", out _);
+
+            var valid = Validate(ship, "WeaponOverload");
 
             if (weaponAmountModifier < 0)
                 Assert.False(valid);
@@ -162,10 +165,8 @@ namespace xUnitTest
             wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
 
             ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
-            
-            var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, _calculations);
-            var valid = !modelState.TryGetValue("HeatStress", out _);
+
+            var valid = Validate(ship, "HeatStress");
 
             if ((weapon1Type == DamageTypeEnum.Heat || weapon2Type == DamageTypeEnum.Heat) && (weapon1Type == DamageTypeEnum.Cold || weapon2Type == DamageTypeEnum.Cold) && weapon1Type != weapon2Type)
                 Assert.False(valid);
