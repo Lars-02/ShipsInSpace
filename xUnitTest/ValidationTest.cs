@@ -117,5 +117,31 @@ namespace xUnitTest
             else
                 Assert.True(valid);
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void CheckWeaponAmount(int weaponAmountModifier)
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
+            var weapons = (new[] {WeaponFactory.CreateWeapon().Object}).ToList();
+
+            wing.Setup(w => w.NumberOfHardpoints).Returns(1 + weaponAmountModifier);
+            wing.Setup(w => w.Hardpoint).Returns(weapons);
+
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+            
+            var modelState = new ModelStateDictionary();
+            Validation.ValidateShip(modelState, ship.Object, _calculations);
+            var valid = !modelState.TryGetValue("WeaponOverload", out _);
+
+            if (weaponAmountModifier < 0)
+                Assert.False(valid);
+            else
+                Assert.True(valid);
+        }
     }
 }
