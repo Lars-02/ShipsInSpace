@@ -35,12 +35,19 @@ namespace Web.Utils
                    (HasTwoStatisWeapons(ship.Wings.SelectMany(wing => wing.Hardpoint)) ? 0.85 : 1);
         }
 
-        private static int GetWingsWeight(IEnumerable<Wing> wings) =>
-            wings.Sum(wing => wing.Weight + GetWeaponsWeight(wing.Hardpoint));
+        private static int GetWingsWeight(IEnumerable<Wing> wings)
+        {
+            return wings.Sum(wing => wing.Weight + GetWeaponsWeight(wing.Hardpoint));
+        }
 
-        private static int GetWeaponsWeight(IEnumerable<Weapon> weapons) => weapons.Sum(weapon => weapon.Weight);
+        private static int GetWeaponsWeight(IEnumerable<Weapon> weapons)
+        {
+            return weapons.Sum(weapon => weapon.Weight);
+        }
 
-        private static bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons) =>
-            weapons.Count(weapon => weapon.DamageType == DamageTypeEnum.Statis) >= 2;
+        private static bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons)
+        {
+            return weapons.Count(weapon => weapon.DamageType == DamageTypeEnum.Statis) >= 2;
+        }
     }
 }

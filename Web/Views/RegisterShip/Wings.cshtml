@@ -28,7 +28,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@Html.ValidationSummary(false, "", new {@class = "text-danger"})
 
 <form asp-controller="RegisterShip" asp-action="Wings" method="POST">
     <input asp-for="HullId">
@@ -37,9 +37,9 @@
     @for (var i = 0; i < Model.SelectedWings.Length; i++)
     {
         <div class="p-3">
-            <h2>Wing @(i+1)</h2>
+            <h2>Wing @(i + 1)</h2>
             @Html.DropDownListFor(m => m.SelectedWings[i], new SelectList(Model.GetSelectableAvailableWings(), "Value", "Text"), new {@class = "form-control"})
-    
+
             <h3>Select Weapons</h3>
             @Html.ListBoxFor(m => m.SelectedWeapons[i], new MultiSelectList(Model.GetSelectableAvailableWeapons(), "Value", "Text"), new {@class = "form-control"})
         </div>

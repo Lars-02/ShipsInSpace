@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Models.Auth;
+using Web.ViewModels.Auth;
 
 namespace Web.Controllers
 {
@@ -8,7 +8,7 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View(new LoginViewModel());
+            return View("Index", new LoginViewModel());
         }
     }
 }
