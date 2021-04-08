@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Web.Data;
+using Web.Utils;
+using Web.Utils.Interfaces;
 
 namespace Web
 {
@@ -34,6 +36,7 @@ namespace Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
             services.AddScoped<ISpaceTransitAuthority, SpaceTransitAuthority>();
+            services.AddScoped<ICalculations, Calculations>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

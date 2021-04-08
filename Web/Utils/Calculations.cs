@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Model;
+using Web.Utils.Interfaces;
 
 namespace Web.Utils
 {
-    public static class Calculations
+    public class Calculations : ICalculations
     {
-        public static double GetEnergyConsumption(IEnumerable<Weapon> weapons)
+        public virtual double GetEnergyConsumption(IEnumerable<Weapon> weapons)
         {
             var totalEnergyConsumption = 0.0;
             foreach (var damageType in Enum.GetValues(typeof(DamageTypeEnum)).Cast<DamageTypeEnum>())
@@ -29,7 +30,7 @@ namespace Web.Utils
             return totalEnergyConsumption;
         }
 
-        public static double GetShipWeight(Ship ship)
+        public virtual double GetShipWeight(Ship ship)
         {
             return (ship.Engine.Weight + GetWingsWeight(ship.Wings)) *
                    (HasTwoStatisWeapons(ship.Wings.SelectMany(wing => wing.Hardpoint)) ? 0.85 : 1);
@@ -45,7 +46,7 @@ namespace Web.Utils
             return weapons.Sum(weapon => weapon.Weight);
         }
 
-        private static bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons)
+        public bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons)
         {
             return weapons.Count(weapon => weapon.DamageType == DamageTypeEnum.Statis) >= 2;
         }

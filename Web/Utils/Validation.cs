@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Data.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Web.Utils.Interfaces;
 
 namespace Web.Utils
 {
@@ -10,11 +11,13 @@ namespace Web.Utils
         private static ModelStateDictionary _modelState;
         private static Ship _ship;
         private static IEnumerable<Weapon> _weapons;
+        private static ICalculations _calculations;
 
-        public static void ValidateShip(ModelStateDictionary modelState, Ship ship)
+        public static void ValidateShip(ModelStateDictionary modelState, Ship ship, ICalculations calculations)
         {
             _modelState = modelState;
             _ship = ship;
+            _calculations = calculations;
             _weapons = _ship.Wings.SelectMany(wing => wing.Hardpoint);
             ValidateNumberOfWeapons();
             ValidateHullWeight();
@@ -33,13 +36,13 @@ namespace Web.Utils
 
         private static void ValidateHullWeight()
         {
-            if (Calculations.GetShipWeight(_ship) > (int) _ship.Hull.DefaultMaximumTakeOffMass)
+            if (_calculations.GetShipWeight(_ship) > (int)_ship.Hull.DefaultMaximumTakeOffMass)
                 _modelState.AddModelError("CapacityOverload", "The ship is too heavy to take off");
         }
 
         private static void ValidateEnergyConsumption()
         {
-            if (Calculations.GetEnergyConsumption(_weapons) > _ship.Energy)
+            if (_calculations.GetEnergyConsumption(_weapons) > _ship.Energy)
                 _modelState.AddModelError("EnergyConsumptionOverdraft",
                     "The energy consumption of the ship is too high");
         }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Data.Model;
@@ -6,6 +6,7 @@ using Data.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Utils;
+using Web.Utils.Interfaces;
 using Web.ViewModels;
 using Web.ViewModels.RegisterShip;
 
@@ -14,10 +15,12 @@ namespace Web.Controllers
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
+        private ICalculations _calculations;
 
-        public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority)
+        public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority, ICalculations calculations)
         {
             _spaceTransitAuthority = spaceTransitAuthority;
+            _calculations = calculations;
         }
 
         public IActionResult Index()
@@ -71,12 +74,14 @@ namespace Web.Controllers
 
             var ship = CreateShip(viewModel);
 
-            Validation.ValidateShip(ModelState, ship);
+            Validation.ValidateShip(ModelState, ship, _calculations);
 
             if (ModelState.ErrorCount <= 0)
                 return View("Overview", new OverviewViewModel
                 {
-                    Ship = ship
+                    Ship = ship,
+                    Weight = _calculations.GetShipWeight(ship),
+                    EnergyConsumption = _calculations.GetEnergyConsumption(ship.Wings.SelectMany(wing => wing.Hardpoint))
                 });
 
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();

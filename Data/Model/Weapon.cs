@@ -1,4 +1,4 @@
-﻿namespace Data.Model
+namespace Data.Model
 {
     public class Weapon
     {
