@@ -4,8 +4,8 @@ namespace Web.ViewModels.RegisterShip
 {
     public class OverviewViewModel
     {
-        public Ship Ship { get; init; }
-        public double Weight { get; init; }
-        public double EnergyConsumption { get; init; }
+        public Ship Ship { get; set; }
+        public double Weight { get; set; }
+        public double EnergyConsumption { get; set; }
     }
 }
