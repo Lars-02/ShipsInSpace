@@ -19,6 +19,7 @@ namespace Web.Utils
             _ship = ship;
             _calculations = calculations;
             _weapons = _ship.Wings.SelectMany(wing => wing.Hardpoint);
+            ValidateNumberOfWings();
             ValidateNumberOfWeapons();
             ValidateHullWeight();
             ValidateEnergyConsumption();
@@ -26,6 +27,12 @@ namespace Web.Utils
             ValidateCombinationWeapons();
             ValidateNullifierWeapon();
             ValidateKineticWeapons();
+        }
+
+        private static void ValidateNumberOfWings()
+        {
+            if (_ship.Wings.Count % 2 != 0)
+                _modelState.AddModelError("OddWings", "The amount of wings on a ship must be even");
         }
 
         private static void ValidateNumberOfWeapons()
