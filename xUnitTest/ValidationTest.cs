@@ -238,5 +238,27 @@ namespace xUnitTest
             else
                 Assert.False(valid);
         }
+
+        [Fact]
+        public void CheckNullifierNotOnlyWeaponOnWing()
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
+            var weapon1 = WeaponFactory.CreateWeapon();
+            weapon1.Setup(w => w.Id).Returns(14);
+
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object}).ToList());
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+            
+            Assert.False(Validate(ship, "LoneNullifier"));
+
+            var weapon2 = WeaponFactory.CreateWeapon();
+
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
+
+            Assert.True(Validate(ship, "LoneNullifier"));
+
+        }
     }
 }
