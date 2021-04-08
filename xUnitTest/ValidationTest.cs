@@ -143,5 +143,34 @@ namespace xUnitTest
             else
                 Assert.True(valid);
         }
+        
+        [Theory]
+        [InlineData(DamageTypeEnum.Heat, DamageTypeEnum.Cold)]
+        [InlineData(DamageTypeEnum.Heat, DamageTypeEnum.Heat)]
+        [InlineData(DamageTypeEnum.Cold, DamageTypeEnum.Cold)]
+        public void CheckHeatColdWeaponsNotAllowed(DamageTypeEnum weapon1Type, DamageTypeEnum weapon2Type)
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
+            var weapon1 = WeaponFactory.CreateWeapon();
+            weapon1.Setup(w => w.DamageType).Returns(weapon1Type);
+            var weapon2 = WeaponFactory.CreateWeapon();
+            weapon2.Setup(w => w.DamageType).Returns(weapon2Type);
+
+            wing.Setup(w => w.NumberOfHardpoints).Returns(2);
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
+
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+            
+            var modelState = new ModelStateDictionary();
+            Validation.ValidateShip(modelState, ship.Object, _calculations);
+            var valid = !modelState.TryGetValue("HeatStress", out _);
+
+            if ((weapon1Type == DamageTypeEnum.Heat || weapon2Type == DamageTypeEnum.Heat) && (weapon1Type == DamageTypeEnum.Cold || weapon2Type == DamageTypeEnum.Cold) && weapon1Type != weapon2Type)
+                Assert.False(valid);
+            else
+                Assert.True(valid);
+        }
     }
 }
