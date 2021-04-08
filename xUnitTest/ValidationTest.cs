@@ -173,5 +173,32 @@ namespace xUnitTest
             else
                 Assert.True(valid);
         }
+        
+        [Theory]
+        [InlineData(DamageTypeEnum.Statis, DamageTypeEnum.Gravity)]
+        [InlineData(DamageTypeEnum.Statis, DamageTypeEnum.Statis)]
+        [InlineData(DamageTypeEnum.Gravity, DamageTypeEnum.Gravity)]
+        public void CheckStatisGravityNotAllowed(DamageTypeEnum weapon1Type, DamageTypeEnum weapon2Type)
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
+            var weapon1 = WeaponFactory.CreateWeapon();
+            weapon1.Setup(w => w.DamageType).Returns(weapon1Type);
+            var weapon2 = WeaponFactory.CreateWeapon();
+            weapon2.Setup(w => w.DamageType).Returns(weapon2Type);
+
+            wing.Setup(w => w.NumberOfHardpoints).Returns(2);
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
+
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+
+            var valid = Validate(ship, "ForceStress");
+
+            if ((weapon1Type == DamageTypeEnum.Statis || weapon2Type == DamageTypeEnum.Statis) && (weapon1Type == DamageTypeEnum.Gravity || weapon2Type == DamageTypeEnum.Gravity) && weapon1Type != weapon2Type)
+                Assert.False(valid);
+            else
+                Assert.True(valid);
+        }
     }
 }
