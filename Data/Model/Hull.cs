@@ -4,13 +4,13 @@ namespace Data.Model
 {
     public class Hull
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Agility { get; set; }
-        public int Speed { get; set; }
-        public int ColdShielding { get; set; }
-        public int HeatShielding { get; set; }
-        public TakeOffMassEnum DefaultMaximumTakeOffMass { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int Agility { get; set; }
+        public virtual int Speed { get; set; }
+        public virtual int ColdShielding { get; set; }
+        public virtual int HeatShielding { get; set; }
+        public virtual TakeOffMassEnum DefaultMaximumTakeOffMass { get; set; }
     }
 
     public enum TakeOffMassEnum

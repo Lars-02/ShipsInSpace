@@ -4,13 +4,13 @@ namespace Data.Model
 {
     public class Wing
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Agility { get; set; }
-        public int Speed { get; set; }
-        public int Energy { get; set; }
-        public int Weight { get; set; }
-        public List<Weapon> Hardpoint { get; set; }
-        public int NumberOfHardpoints { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int Agility { get; set; }
+        public virtual int Speed { get; set; }
+        public virtual int Energy { get; set; }
+        public virtual int Weight { get; set; }
+        public virtual List<Weapon> Hardpoint { get; set; }
+        public virtual int NumberOfHardpoints { get; set; }
     }
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Data.Model;
 using Data.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,6 +6,7 @@ using Web.Controllers;
 using Web.Utils;
 using Xunit;
 using Xunit.Abstractions;
+using xUnitTest.Factories;
 
 namespace xUnitTest
 {
@@ -17,33 +14,15 @@ namespace xUnitTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly RegisterShipController _shipController;
-        private SpaceTransitAuthority _spaceTransitAuthority;
 
         public ValidShipTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _spaceTransitAuthority = new SpaceTransitAuthority();
+            var spaceTransitAuthority = new SpaceTransitAuthority();
             var calculations = new Calculations();
-            _shipController = new RegisterShipController(_spaceTransitAuthority, calculations);
+            _shipController = new RegisterShipController(spaceTransitAuthority, calculations);
         }
 
-        private Mock<Ship> CreateShip()
-        {
-            var ship = new Mock<Ship>();
-
-            var wings = _spaceTransitAuthority.GetWings().Take(2).ToList();
-            wings.ForEach(w => w.Hardpoint = new List<Weapon>());
-            wings.ForEach(w => w.Hardpoint.Add(_spaceTransitAuthority.GetWeapons().First(wpn => wpn.Id == 4)));
-            
-            ship.Setup(s => s.Id).Returns(0);
-            ship.Setup(s => s.Name).Returns("TestShip");
-            ship.Setup(s => s.Hull).Returns(_spaceTransitAuthority.GetHulls().First());
-            ship.Setup(s => s.Wings).Returns(wings);
-            ship.Setup(s => s.Engine).Returns(_spaceTransitAuthority.GetEngines().First());
-
-            return ship;
-        }
-            
         [Fact]
         public void CheckEvenNumberOfWingsFrontend()
         {
@@ -64,7 +43,7 @@ namespace xUnitTest
         [InlineData(1)]
         public void CheckMassIsLessThenCapacity(int weightModifier)
         {
-            var ship = CreateShip();
+            var ship = ShipFactory.CreateShip();
 
             var calculations = new Mock<Calculations>();
             

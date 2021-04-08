@@ -2,11 +2,11 @@ namespace Data.Model
 {
     public class Weapon
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DamageTypeEnum DamageType { get; set; }
-        public int EnergyDrain { get; set; }
-        public int Weight { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
+        public virtual DamageTypeEnum DamageType { get; set; }
+        public virtual int EnergyDrain { get; set; }
+        public virtual int Weight { get; set; }
     }
 
     public enum DamageTypeEnum

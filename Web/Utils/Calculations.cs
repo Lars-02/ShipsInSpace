@@ -46,7 +46,7 @@ namespace Web.Utils
             return weapons.Sum(weapon => weapon.Weight);
         }
 
-        public bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons)
+        private bool HasTwoStatisWeapons(IEnumerable<Weapon> weapons)
         {
             return weapons.Count(weapon => weapon.DamageType == DamageTypeEnum.Statis) >= 2;
         }
