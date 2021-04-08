@@ -5,7 +5,7 @@ namespace Web.Utils.Interfaces
 {
     public interface ICalculations
     {
-        double GetEnergyConsumption(IEnumerable<Weapon> weapons);
+        double GetEnergyConsumption(Ship ship);
         double GetShipWeight(Ship ship);
     }
 }

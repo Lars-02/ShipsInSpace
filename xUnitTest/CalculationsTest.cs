@@ -83,6 +83,9 @@ namespace xUnitTest
         [InlineData(4)]
         public void CheckEnergyConsumptionSameType(int weaponAmount)
         {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+           
             var weapons = new List<Weapon>();
 
             for (var i = 0; i < weaponAmount; i++)
@@ -92,8 +95,11 @@ namespace xUnitTest
                 weapon.Setup(w => w.DamageType).Returns(DamageTypeEnum.Statis);
                 weapons.Add(weapon.Object);
             }
+            
+            wing.Setup(w => w.Hardpoint).Returns(weapons);
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
 
-            Assert.Equal(weaponAmount* 5 * (weaponAmount >= 3 ? 0.8 : 1), _calculations.GetEnergyConsumption(weapons));
+            Assert.Equal(weaponAmount* 5 * (weaponAmount >= 3 ? 0.8 : 1), _calculations.GetEnergyConsumption(ship.Object));
         }
 
         [Theory]
@@ -103,6 +109,9 @@ namespace xUnitTest
         [InlineData(4)]
         public void CheckEnergyConsumptionNotSameType(int weaponAmount)
         {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
             var weapons = new List<Weapon>();
 
             for (var i = 0; i < weaponAmount; i++)
@@ -113,8 +122,11 @@ namespace xUnitTest
                 _testOutputHelper.WriteLine(((DamageTypeEnum) i).ToString());
                 weapons.Add(weapon.Object);
             }
+            
+            wing.Setup(w => w.Hardpoint).Returns(weapons);
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
 
-            Assert.Equal(weaponAmount* 5, _calculations.GetEnergyConsumption(weapons));
+            Assert.Equal(weaponAmount* 5, _calculations.GetEnergyConsumption(ship.Object));
         }
     }
 }

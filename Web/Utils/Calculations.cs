@@ -8,8 +8,10 @@ namespace Web.Utils
 {
     public class Calculations : ICalculations
     {
-        public virtual double GetEnergyConsumption(IEnumerable<Weapon> weapons)
+        public virtual double GetEnergyConsumption(Ship ship)
         {
+            var weapons = ship.Wings.SelectMany(wing => wing.Hardpoint);
+            
             var totalEnergyConsumption = 0.0;
             foreach (var damageType in Enum.GetValues(typeof(DamageTypeEnum)).Cast<DamageTypeEnum>())
             {

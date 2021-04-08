@@ -49,7 +49,7 @@ namespace Web.Utils
 
         private static void ValidateEnergyConsumption()
         {
-            if (_calculations.GetEnergyConsumption(_weapons) > _ship.Energy)
+            if (_calculations.GetEnergyConsumption(_ship) > _ship.Energy)
                 _modelState.AddModelError("EnergyConsumptionOverdraft",
                     "The energy consumption of the ship is too high");
         }

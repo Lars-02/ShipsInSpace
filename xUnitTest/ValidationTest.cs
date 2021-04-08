@@ -39,6 +39,28 @@ namespace xUnitTest
         }
         
         [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void CheckEnergyIsLessThenCapacity(int energyModifier)
+        {
+            var ship = ShipFactory.CreateShip();
+            ship.Setup(s => s.Energy).Returns(50);
+
+            var calculations = new Mock<Calculations>();
+            
+            calculations.Setup(c => c.GetEnergyConsumption(ship.Object)).Returns(50+energyModifier);
+            var modelState = new ModelStateDictionary();
+            Validation.ValidateShip(modelState, ship.Object, calculations.Object);
+            var valid = !modelState.TryGetValue("EnergyConsumptionOverdraft", out _);
+
+            if (energyModifier <= 0)
+                Assert.True(valid);
+            else
+                Assert.False(valid);
+        }
+
+        [Theory]
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]

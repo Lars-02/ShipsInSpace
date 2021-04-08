@@ -81,7 +81,7 @@ namespace Web.Controllers
                 {
                     Ship = ship,
                     Weight = _calculations.GetShipWeight(ship),
-                    EnergyConsumption = _calculations.GetEnergyConsumption(ship.Wings.SelectMany(wing => wing.Hardpoint))
+                    EnergyConsumption = _calculations.GetEnergyConsumption(ship)
                 });
 
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
