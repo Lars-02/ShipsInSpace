@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Data.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Moq;
@@ -79,15 +80,42 @@ namespace xUnitTest
             ship.Setup(s => s.Wings).Returns(wings);
 
             var modelState = new ModelStateDictionary();
-            
             Validation.ValidateShip(modelState, ship.Object, _calculations);
-            
             var valid = !modelState.TryGetValue("OddWings", out _);
             
             if (amount % 2 == 0)
                 Assert.True(valid);
             else
                 Assert.False(valid);
+        }
+
+        [Theory]
+        [InlineData(2, 9)]
+        [InlineData(2, 1)]
+        [InlineData(1, 9)]
+        [InlineData(1, 1)]
+        public void CheckImploderCombination(int engineId, int weaponId)
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            var weapon = WeaponFactory.CreateWeapon();
+            var engine = EngineFactory.CreateEngine();
+            
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon.Object}).ToList());
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+            ship.Setup(s => s.Engine).Returns(engine.Object);
+            
+            engine.Setup(e => e.Id).Returns(engineId);
+            weapon.Setup(w => w.Id).Returns(weaponId);
+
+            var modelState = new ModelStateDictionary();
+            Validation.ValidateShip(modelState, ship.Object, _calculations);
+            var valid = !modelState.TryGetValue("ImplosionDanger", out _);
+            
+            if (engineId == 2 && weaponId == 9)
+                Assert.False(valid);
+            else
+                Assert.True(valid);
         }
     }
 }
