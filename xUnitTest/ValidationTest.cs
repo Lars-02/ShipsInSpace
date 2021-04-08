@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Model;
@@ -199,6 +200,43 @@ namespace xUnitTest
                 Assert.False(valid);
             else
                 Assert.True(valid);
+        }
+        
+        [Theory]
+        [InlineData(33)]
+        [InlineData(34)]
+        [InlineData(35)]
+        [InlineData(-33)]
+        [InlineData(-34)]
+        [InlineData(-35)]
+        public void CheckEnergyDifferenceLessThen35(int energyDifference)
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing1 = WingFactory.CreateWing();
+            var wing2 = WingFactory.CreateWing();
+            
+            var weapon1 = WeaponFactory.CreateWeapon();
+            weapon1.Setup(w => w.DamageType).Returns(DamageTypeEnum.Kinetic);
+            weapon1.Setup(w => w.EnergyDrain).Returns(50 + energyDifference);
+            var weapon2 = WeaponFactory.CreateWeapon();
+            weapon2.Setup(w => w.DamageType).Returns(DamageTypeEnum.Kinetic);
+            weapon2.Setup(w => w.EnergyDrain).Returns(50);
+            
+            var weapon3 = WeaponFactory.CreateWeapon();
+            weapon3.Setup(w => w.DamageType).Returns(DamageTypeEnum.Kinetic);
+            weapon3.Setup(w => w.EnergyDrain).Returns(100);
+
+            wing1.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
+            wing2.Setup(w => w.Hardpoint).Returns((new[] {weapon3.Object}).ToList());
+
+            ship.Setup(s => s.Wings).Returns((new[] {wing1.Object, wing2.Object}).ToList());
+
+            var valid = Validate(ship, "KineticDifference");
+
+            if (Math.Abs(energyDifference) < 35)
+                Assert.True(valid);
+            else
+                Assert.False(valid);
         }
     }
 }

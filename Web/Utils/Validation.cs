@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Model;
@@ -81,15 +82,15 @@ namespace Web.Utils
 
         private static void ValidateKineticWeapons()
         {
-            var energyDrainWing = _ship.Wings.Where(wing =>
-                    wing.Hardpoint.Any(weapon => weapon.DamageType == DamageTypeEnum.Kinetic))
-                .Select(wing => wing.Hardpoint.Where(weapon => weapon.DamageType == DamageTypeEnum.Kinetic)
-                    .Sum(weapon => weapon.EnergyDrain)).ToList();
+            var kineticWings = _ship.Wings.Where(wing =>
+                wing.Hardpoint.Any(weapon => weapon.DamageType == DamageTypeEnum.Kinetic));
 
-            if (energyDrainWing.Count <= 0)
+            var energyPerWing = kineticWings.Select(wing => wing.Hardpoint.Sum(weapon => weapon.EnergyDrain)).ToList();
+
+            if (energyPerWing.Count <= 0)
                 return;
 
-            if (energyDrainWing.Max() - energyDrainWing.Min() > 35)
+            if (energyPerWing.Max() - energyPerWing.Min() >= 35)
                 _modelState.AddModelError("KineticDifference",
                     "The energy drain of kinetic weapons on different wings can't be more than 35");
         }
