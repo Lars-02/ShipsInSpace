@@ -48,7 +48,7 @@ namespace xUnitTest
         }
         
         [Fact]
-        public void CheckStaticShipWeight()
+        public void CheckStatisShipWeight()
         {
             var ship = ShipFactory.CreateShip();
             var engine = EngineFactory.CreateEngine();
