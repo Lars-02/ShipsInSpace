@@ -6,11 +6,11 @@ namespace Web.ViewModels.Auth
     public class LoginViewModel
     {
         [Required]
-        [DisplayName("Licence plate*")]
-        public string LicencePlate { get; set; }
+        [DisplayName("License plate")]
+        public string LicensePlate { get; set; }
 
         [Required]
-        [DisplayName("Secret code*")]
-        public string Code { get; set; }
+        [DisplayName("Secret code")]
+        public string SecretCode { get; set; }
     }
 }

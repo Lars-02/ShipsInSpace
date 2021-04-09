@@ -5,7 +5,7 @@
     ViewData["Title"] = "Register Pirate";
 }
 
-<form asp-controller="Register" asp-action="RegisterPirate" method="POST">
+<form asp-controller="Auth" asp-action="RegisterPirate" method="POST">
     @Html.AntiForgeryToken()
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group d-flex flex-column">

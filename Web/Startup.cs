@@ -47,8 +47,6 @@ namespace Web
 
             services.AddTransient<UserManager<IdentityUser>>();
             services.AddTransient<ApplicationDbContext>();
-            
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +71,6 @@ namespace Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
