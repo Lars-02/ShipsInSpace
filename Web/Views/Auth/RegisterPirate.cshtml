@@ -15,9 +15,7 @@
     </div>
     <div class="form-group d-flex flex-column">
         <label asp-for="LicenceId"></label>
-        <select asp-for="LicenceId" asp-items="Html.GetEnumSelectList<Licence>()">
-            <option disabled selected value="">Please select</option>
-        </select>
+        <select asp-for="LicenceId" asp-items="Html.GetEnumSelectList<Licence>()"></select>
         @* <span asp-validation-for="LicenceId" class="text-danger"></span> *@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

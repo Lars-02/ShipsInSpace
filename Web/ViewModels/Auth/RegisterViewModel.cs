@@ -15,8 +15,7 @@ namespace Web.ViewModels.Auth
 
         [Required(ErrorMessage = "Licence a valid option")]
         [DisplayName("License type")]
-        [Range(0, 3)]
-        public int LicenceId { get; set; } = -1;
+        public int LicenceId { get; set; } = (int) Licence.A;
         
         public Licence License { get; set; }
         public string SecretCode { get; set; }
