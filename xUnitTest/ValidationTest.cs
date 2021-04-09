@@ -25,10 +25,10 @@ namespace xUnitTest
             return Validate(ship, errorMessage, _calculations);
         }
 
-        private bool Validate(IMock<Ship> ship, string errorMessage, IMock<ICalculations> calculations, double maximumTakeoffMass=0)
+        private static bool Validate(IMock<Ship> ship, string errorMessage, IMock<ICalculations> calculations, double maximumTakeoffMass=0, Licence licence=Licence.Z)
         {
             var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, calculations.Object, maximumTakeoffMass);
+            Validation.ValidateShip(modelState, ship.Object, calculations.Object, maximumTakeoffMass, licence);
             var valid = !modelState.TryGetValue(errorMessage, out _);
 
             return valid;
@@ -262,6 +262,30 @@ namespace xUnitTest
             wing.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
 
             Assert.True(Validate(ship, "LoneNullifier"));
+        }
+
+        [Theory]
+        [InlineData(Licence.A, -1)]
+        [InlineData(Licence.A, 0)]
+        [InlineData(Licence.A, 1)]
+        [InlineData(Licence.B, 0)]
+        [InlineData(Licence.C, 0)]
+        [InlineData(Licence.Z, -1)]
+        [InlineData(Licence.Z, 0)]
+        [InlineData(Licence.Z, 1)]
+        public void CheckMaxLicenseWeight(Licence licence, int weightModifier)
+        {
+            var ship = ShipFactory.CreateShip();
+
+            var calculations = new Mock<Calculations>();
+            calculations.Setup(c => c.GetShipWeight(ship.Object)).Returns((int) licence + weightModifier);
+
+            var valid = Validate(ship, "ToHeavyForLicense", calculations, licence: licence);
+            
+            if (weightModifier <= 0 || licence == Licence.Z)
+                Assert.True(valid);
+            else
+                Assert.False(valid);
 
         }
     }

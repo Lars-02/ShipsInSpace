@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using Data.Model;
 using Data.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Utils;
@@ -17,10 +18,12 @@ namespace Web.Controllers
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
-        private ICalculations _calculations;
+        private readonly ICalculations _calculations;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public RegisterShipController(ISpaceTransitAuthority spaceTransitAuthority, ICalculations calculations)
+        public RegisterShipController(UserManager<IdentityUser> userManager, ISpaceTransitAuthority spaceTransitAuthority, ICalculations calculations)
         {
+            _userManager = userManager;
             _spaceTransitAuthority = spaceTransitAuthority;
             _calculations = calculations;
         }
@@ -78,7 +81,8 @@ namespace Web.Controllers
 
             var ship = CreateShip(viewModel);
 
-            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass);
+            var license = (Licence) int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "License")?.Value ?? string.Empty);
+            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass, license);
 
             if (ModelState.ErrorCount > 0)
             {
@@ -104,7 +108,8 @@ namespace Web.Controllers
         public IActionResult Submit(OverviewViewModel viewModel)
         {
             var ship = CreateShip(viewModel);
-            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass);
+            var license = (Licence) int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "License")?.Value ?? string.Empty);
+            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass, license);
 
             var shipJson = JsonSerializer.Serialize(ship);
             var registrationId = _spaceTransitAuthority.RegisterShip(shipJson);

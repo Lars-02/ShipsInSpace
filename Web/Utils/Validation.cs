@@ -14,7 +14,7 @@ namespace Web.Utils
         private static IEnumerable<Weapon> _weapons;
         private static ICalculations _calculations;
 
-        public static void ValidateShip(ModelStateDictionary modelState, Ship ship, ICalculations calculations, double maximumTakeoffMass)
+        public static void ValidateShip(ModelStateDictionary modelState, Ship ship, ICalculations calculations, double maximumTakeoffMass, Licence licence)
         {
             _modelState = modelState;
             _ship = ship;
@@ -28,6 +28,7 @@ namespace Web.Utils
             ValidateCombinationWeapons();
             ValidateNullifierWeapon();
             ValidateKineticWeapons();
+            ValidateMaxLicenseWeight(licence);
         }
 
         private static void ValidateNumberOfWings()
@@ -93,6 +94,16 @@ namespace Web.Utils
             if (energyPerWing.Max() - energyPerWing.Min() >= 35)
                 _modelState.AddModelError("KineticDifference",
                     "The energy drain of kinetic weapons on different wings can't be more than 35");
+        }
+
+        private static void ValidateMaxLicenseWeight(Licence licence)
+        {
+            var maxWeight = (int) licence;
+            if (maxWeight == -1)
+                return;
+            
+            if (_calculations.GetShipWeight(_ship) > maxWeight)
+                _modelState.AddModelError("ToHeavyForLicense", "The ship is too heavy for your license");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace xUnitTest
         {
             var spaceTransitAuthority = new SpaceTransitAuthority();
             var calculations = new Calculations();
-            _shipController = new RegisterShipController(spaceTransitAuthority, calculations);
+            _shipController = new RegisterShipController(null, spaceTransitAuthority, calculations);
         }
         
         [Theory]
