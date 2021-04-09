@@ -44,8 +44,6 @@ namespace Web.Utils
 
         private static void ValidateHullWeight(double maximumTakeoffMass)
         {
-            Console.WriteLine(_calculations.GetShipWeight(_ship));
-            Console.WriteLine(maximumTakeoffMass);
             if (_calculations.GetShipWeight(_ship) > maximumTakeoffMass)
                 _modelState.AddModelError("CapacityOverload", "The ship is too heavy to take off");
         }
