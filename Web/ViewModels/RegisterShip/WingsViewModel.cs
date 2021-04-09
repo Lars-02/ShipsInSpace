@@ -18,6 +18,8 @@ namespace Web.ViewModels.RegisterShip
         [HiddenInput] public int HullId { get; set; }
 
         [HiddenInput] public int EngineId { get; set; }
+        
+        [HiddenInput] public double MaximumTakeoffMass { get; set; }
 
         public IEnumerable<SelectListItem> GetSelectableAvailableWings()
         {

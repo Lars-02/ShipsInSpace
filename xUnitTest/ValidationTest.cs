@@ -25,10 +25,10 @@ namespace xUnitTest
             return Validate(ship, errorMessage, _calculations);
         }
 
-        private bool Validate(IMock<Ship> ship, string errorMessage, IMock<ICalculations> calculations)
+        private bool Validate(IMock<Ship> ship, string errorMessage, IMock<ICalculations> calculations, double maximumTakeoffMass=0)
         {
             var modelState = new ModelStateDictionary();
-            Validation.ValidateShip(modelState, ship.Object, calculations.Object);
+            Validation.ValidateShip(modelState, ship.Object, calculations.Object, maximumTakeoffMass);
             var valid = !modelState.TryGetValue(errorMessage, out _);
 
             return valid;
@@ -43,10 +43,10 @@ namespace xUnitTest
             var ship = ShipFactory.CreateShip();
 
             var calculations = new Mock<Calculations>();
+
+            calculations.Setup(c => c.GetShipWeight(ship.Object)).Returns(50+weightModifier);
             
-            calculations.Setup(c => c.GetShipWeight(ship.Object)).Returns((int) ship.Object.Hull.DefaultMaximumTakeOffMass+weightModifier);
-            
-            var valid = Validate(ship, "CapacityOverload", calculations);
+            var valid = Validate(ship, "CapacityOverload", calculations, 50);
 
             if (weightModifier <= 0)
                 Assert.True(valid);

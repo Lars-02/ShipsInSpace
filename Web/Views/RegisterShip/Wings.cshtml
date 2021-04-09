@@ -33,6 +33,7 @@
 <form asp-controller="RegisterShip" asp-action="Wings" method="POST">
     <input asp-for="HullId">
     <input asp-for="EngineId">
+    <input asp-for="MaximumTakeoffMass">
 
     @for (var i = 0; i < Model.SelectedWings.Length; i++)
     {

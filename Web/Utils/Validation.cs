@@ -14,7 +14,7 @@ namespace Web.Utils
         private static IEnumerable<Weapon> _weapons;
         private static ICalculations _calculations;
 
-        public static void ValidateShip(ModelStateDictionary modelState, Ship ship, ICalculations calculations)
+        public static void ValidateShip(ModelStateDictionary modelState, Ship ship, ICalculations calculations, double maximumTakeoffMass)
         {
             _modelState = modelState;
             _ship = ship;
@@ -22,7 +22,7 @@ namespace Web.Utils
             _weapons = _ship.Wings.SelectMany(wing => wing.Hardpoint);
             ValidateNumberOfWings();
             ValidateNumberOfWeapons();
-            ValidateHullWeight();
+            ValidateHullWeight(maximumTakeoffMass);
             ValidateEnergyConsumption();
             ValidateImploderWeapons();
             ValidateCombinationWeapons();
@@ -42,9 +42,11 @@ namespace Web.Utils
                 _modelState.AddModelError("WeaponOverload", "There are too many weapons on " + wing.Name);
         }
 
-        private static void ValidateHullWeight()
+        private static void ValidateHullWeight(double maximumTakeoffMass)
         {
-            if (_calculations.GetShipWeight(_ship) > (int)_ship.Hull.DefaultMaximumTakeOffMass)
+            Console.WriteLine(_calculations.GetShipWeight(_ship));
+            Console.WriteLine(maximumTakeoffMass);
+            if (_calculations.GetShipWeight(_ship) > maximumTakeoffMass)
                 _modelState.AddModelError("CapacityOverload", "The ship is too heavy to take off");
         }
 

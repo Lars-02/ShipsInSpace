@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Data.Model;
 
 namespace Web.Utils.Interfaces

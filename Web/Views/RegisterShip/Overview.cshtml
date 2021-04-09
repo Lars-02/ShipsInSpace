@@ -18,7 +18,7 @@
                         <span class="font-weight-bold">Pilot's license: </span>TODO! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
+                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.MaximumTakeoffMass)
                     </li>
                     <li class="list-group-item py-2">
                         <span class="font-weight-bold">Total Weight: </span>@Model.Weight
@@ -34,12 +34,6 @@
                     </li>
                     <li class="list-group-item py-2">
                         <span class="font-weight-bold">Total Speed: </span>@Model.Ship.Speed
-                    </li>
-                    <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Cold Shielding: </span>@Model.Ship.Hull.ColdShielding
-                    </li>
-                    <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
                     </li>
                 </ul>
             </div>
@@ -68,7 +62,10 @@
                         <span class="font-weight-bold">Heat Shielding: </span>@Model.Ship.Hull.HeatShielding
                     </li>
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
+                        <span class="font-weight-bold">Default Maximum Takeoff Mass: </span>@((int) Model.Ship.Hull.DefaultMaximumTakeOffMass)
+                    </li>
+                    <li class="list-group-item py-2">
+                        <span class="font-weight-bold">Actual Maximum Takeoff Mass: </span>@((int) Model.MaximumTakeoffMass)
                     </li>
                 </ul>
             </div>

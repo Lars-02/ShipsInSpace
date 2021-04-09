@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -58,7 +59,9 @@ namespace Web.Controllers
                 AvailableWings = _spaceTransitAuthority.GetWings(),
                 AvailableWeapons = _spaceTransitAuthority.GetWeapons(),
                 EngineId = viewModel.SelectedEngine,
-                HullId = viewModel.SelectedHull
+                HullId = viewModel.SelectedHull,
+                MaximumTakeoffMass = _spaceTransitAuthority.CheckActualHullCapacity(_spaceTransitAuthority
+                    .GetHulls().FirstOrDefault(h => h.Id == viewModel.SelectedHull))
             });
         }
 
@@ -74,14 +77,15 @@ namespace Web.Controllers
 
             var ship = CreateShip(viewModel);
 
-            Validation.ValidateShip(ModelState, ship, _calculations);
+            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass);
 
             if (ModelState.ErrorCount <= 0)
                 return View("Overview", new OverviewViewModel
                 {
                     Ship = ship,
                     Weight = _calculations.GetShipWeight(ship),
-                    EnergyConsumption = _calculations.GetEnergyConsumption(ship)
+                    EnergyConsumption = _calculations.GetEnergyConsumption(ship),
+                    MaximumTakeoffMass = viewModel.MaximumTakeoffMass
                 });
 
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
