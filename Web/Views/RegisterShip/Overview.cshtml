@@ -1,7 +1,11 @@
+@using global::Data.Model
 @model Web.ViewModels.RegisterShip.OverviewViewModel
 
 @{
     ViewData["Title"] = "Overview";
+
+    var licenceWeight = int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "License")?.Value ?? "0");
+    var licence = (Licence) licenceWeight;
 }
 <div class="container">
     <h1>@ViewData["Title"]</h1>
@@ -15,7 +19,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item py-2">
-                        <span class="font-weight-bold">Pilot's license: </span>TODO! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                        <span class="font-weight-bold">Pilot's license: </span>@licence (@licenceWeight)
                     </li>
                     <li class="list-group-item py-2">
                         <span class="font-weight-bold">Maximum Takeoff Mass: </span>@((int) Model.MaximumTakeoffMass)
