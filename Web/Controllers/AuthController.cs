@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Data.Model;
 using Microsoft.AspNetCore.Identity;
@@ -48,6 +50,8 @@ namespace Web.Controllers
 
                 return View(viewModel);
             }
+            
+            await _userManager.AddClaimAsync(user, new Claim("License", viewModel.LicenceId.ToString()));
 
             return View("Registered", viewModel);
         }
