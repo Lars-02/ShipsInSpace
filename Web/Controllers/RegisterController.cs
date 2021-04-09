@@ -1,26 +1,28 @@
-using System;
-using System.Diagnostics;
+﻿using System;
+using Data.Model;
 using Microsoft.AspNetCore.Mvc;
-using Web.ViewModels;
 using Web.ViewModels.RegisterShip;
 
 namespace Web.Controllers
 {
     public class RegisterController : Controller
     {
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult RegisterPirate()
         {
             return View(new RegisterViewModel());
         }
 
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult RegisterPirate(RegisterViewModel viewModel)
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
-        }
+            if (!ModelState.IsValid)
+                return View(viewModel);
 
-        public IActionResult RegisterPirate()
-        {
-            throw new NotImplementedException();
+            viewModel.License = (Licence) viewModel.LicenceId;
+            viewModel.SecretCode = Guid.NewGuid().ToString().Substring(0, 8);
+
+            return View("Registered", viewModel);
         }
     }
 }

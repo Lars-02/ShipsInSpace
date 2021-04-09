@@ -1,0 +1,23 @@
+@using global::Data.Model
+@model Web.ViewModels.RegisterShip.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register Pirate";
+}
+
+<form asp-controller="Register" asp-action="RegisterPirate" method="POST">
+    @Html.AntiForgeryToken()
+    <div class="form-group d-flex flex-column">
+        <label asp-for="LicensePlate"></label>
+        <input asp-for="LicensePlate" class="form-control">
+        <span asp-validation-for="LicensePlate" class="text-danger"></span>
+    </div>
+    <div class="form-group d-flex flex-column">
+        <label asp-for="LicenceId"></label>
+        <select asp-for="LicenceId" asp-items="Html.GetEnumSelectList<Licence>()">
+            <option disabled selected value="">Please select</option>
+        </select>
+        <span asp-validation-for="LicenceId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

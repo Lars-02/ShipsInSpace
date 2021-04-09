@@ -98,3 +98,25 @@ body {
     height: 1em;
 }
 
+select,
+input,
+option {
+    font-weight: 600 !important;
+    padding-left: 1em !important;
+}
+
+input,
+select {
+    height: 3em !important;
+}
+
+select[multiple] {
+    height: 12.5em !important;
+}
+
+option {
+    height: 2.5em;
+    line-height: 2.5em;
+    display: flex;
+    align-items: center;
+}

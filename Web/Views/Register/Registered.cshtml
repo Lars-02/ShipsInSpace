@@ -1,0 +1,35 @@
+@model Web.ViewModels.RegisterShip.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registered";
+}
+
+<style>
+    table {
+    width: 50%;
+    margin: 30% auto;
+    }
+    
+    table tr td {
+        height: 2em;
+    }
+    
+    table tr td:first-child {
+        font-weight: bold;
+    }
+</style>
+
+<table>
+        <tr>
+            <td>Licence plate</td>
+            <td>@Model.LicensePlate</td>
+        </tr>
+        <tr>
+            <td>Secret code</td>
+            <td>@Model.SecretCode</td>
+        </tr>
+        <tr>
+            <td>Licence</td>
+            <td>@Model.License</td>
+        </tr>
+    </table>
