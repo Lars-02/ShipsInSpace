@@ -11,11 +11,11 @@ using xUnitTest.Factories;
 
 namespace xUnitTest
 {
-    public class ValidShipTest
+    public class ValidationTest
     {
         private readonly Mock<Calculations> _calculations;
 
-        public ValidShipTest()
+        public ValidationTest()
         {
             _calculations = new Mock<Calculations>();
         }
@@ -310,6 +310,23 @@ namespace xUnitTest
             else
                 Assert.False(valid);
 
+        }
+
+        [Fact]
+        public void CheckAtLeastOneWeaponPerWing()
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+
+            wing.Setup(w => w.Hardpoint).Returns((Array.Empty<Weapon>()).ToList());
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+
+            Assert.False(Validate(ship, "AtLeastOneWeaponPerWing"));
+            
+            var weapon = WeaponFactory.CreateWeapon();
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon.Object}).ToList());
+            
+            Assert.True(Validate(ship, "AtLeastOneWeaponPerWing"));
         }
     }
 }

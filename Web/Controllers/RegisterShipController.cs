@@ -81,12 +81,9 @@ namespace Web.Controllers
             viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
             viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
             
-            if (viewModel.SelectedWeapons.Length < viewModel.SelectedWings.Length)
-            {
+            if (viewModel.SelectedWeapons == null || viewModel.SelectedWeapons.Length < viewModel.SelectedWings.Length)
                 viewModel.SelectedWeapons = new List<int>[viewModel.SelectedWings.Length];
-                ModelState.AddModelError("AtLeastOneWeaponPerWing", "Please select at least one weapon per wing.");
-                return View(viewModel);
-            }
+            
             if (!ModelState.IsValid)
                 return View(viewModel);
 

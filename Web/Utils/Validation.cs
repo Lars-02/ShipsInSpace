@@ -29,6 +29,7 @@ namespace Web.Utils
             ValidateNullifierWeapon();
             ValidateKineticWeapons();
             ValidateMaxLicenseWeight(licence);
+            ValidateAtLeastOneWeaponPerWing();
         }
 
         private static void ValidateNumberOfWings()
@@ -104,6 +105,14 @@ namespace Web.Utils
             
             if (_calculations.GetShipWeight(_ship) > maxWeight)
                 _modelState.AddModelError("ToHeavyForLicense", "The ship is too heavy for your license");
+        }
+
+        private static void ValidateAtLeastOneWeaponPerWing()
+        {
+            var hasWingWithoutWeapon = _ship.Wings.Any(wing => wing.Hardpoint.Count < 1);
+
+            if (hasWingWithoutWeapon)
+                _modelState.AddModelError("AtLeastOneWeaponPerWing", "Please select at least one weapon per wing.");
         }
     }
 }
