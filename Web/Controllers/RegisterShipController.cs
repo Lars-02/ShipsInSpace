@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text.Json;
 using Data.Model;
 using Data.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Web.Data.Model;
 using Web.Utils;
 using Web.Utils.Interfaces;
 using Web.ViewModels;
@@ -15,6 +17,7 @@ using Web.ViewModels.RegisterShip;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = Roles.Pirate)]
     public class RegisterShipController : Controller
     {
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;

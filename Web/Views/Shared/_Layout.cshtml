@@ -1,3 +1,4 @@
+@using Web.Data.Model
 <!DOCTYPE html>
 <!--suppress CssUnknownTarget -->
 <html lang="en">
@@ -40,15 +41,18 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Auth" asp-action="RegisterPirate">Register pirate</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="RegisterShip" asp-action="Index">Register ship</a>
-                    </li>
+                    @if (User.IsInRole(Roles.Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="RegisterPirate">Register pirate</a>
+                        </li>
+                    }
+                    @if (User.IsInRole(Roles.Pirate))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="RegisterShip" asp-action="Index">Register ship</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

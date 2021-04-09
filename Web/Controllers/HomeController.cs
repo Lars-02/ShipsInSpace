@@ -1,6 +1,6 @@
-using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Web.Data.Model;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -9,7 +9,12 @@ namespace Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole(Roles.Admin))
+                return RedirectToAction("RegisterPirate", "Auth");
+            if (User.IsInRole(Roles.Pirate))
+                return RedirectToAction("Index", "RegisterShip");
+            
+            return RedirectToAction("Login", "Auth");
         }
 
         public IActionResult Error()

@@ -2,12 +2,14 @@ using Data.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Web.Data;
+using Web.Data.Model;
 using Web.Utils;
 using Web.Utils.Interfaces;
 
@@ -36,6 +38,7 @@ namespace Web
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 4;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -46,6 +49,7 @@ namespace Web
             services.AddScoped<ICalculations, Calculations>();
 
             services.AddTransient<UserManager<IdentityUser>>();
+            services.AddTransient<RoleManager<IdentityRole>>();
             services.AddTransient<ApplicationDbContext>();
         }
 
