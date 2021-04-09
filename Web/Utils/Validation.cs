@@ -86,14 +86,14 @@ namespace Web.Utils
             var kineticWings = _ship.Wings.Where(wing =>
                 wing.Hardpoint.Any(weapon => weapon.DamageType == DamageTypeEnum.Kinetic));
 
-            var energyPerWing = kineticWings.Select(wing => wing.Hardpoint.Sum(weapon => weapon.EnergyDrain)).ToList();
+            var energyPerWing = kineticWings.Select(wing => wing.Hardpoint.Where(weapon => weapon.DamageType == DamageTypeEnum.Kinetic).Sum(weapon => weapon.EnergyDrain)).ToList();
 
             if (energyPerWing.Count <= 0)
                 return;
 
-            if (energyPerWing.Max() - energyPerWing.Min() >= 35)
+            if ((energyPerWing.Max() - energyPerWing.Min() >= 35) || (energyPerWing.Count == 1 && energyPerWing[0] >= 35))
                 _modelState.AddModelError("KineticDifference",
-                    "The energy drain of kinetic weapons on different wings can't be more than 35");
+                    "The energy drain of kinetic weapons on different wings cannot be more than 35");
         }
 
         private static void ValidateMaxLicenseWeight(Licence licence)

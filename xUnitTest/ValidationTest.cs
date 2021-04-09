@@ -229,9 +229,13 @@ namespace xUnitTest
             var weapon3 = WeaponFactory.CreateWeapon();
             weapon3.Setup(w => w.DamageType).Returns(DamageTypeEnum.Kinetic);
             weapon3.Setup(w => w.EnergyDrain).Returns(100);
+            
+            var weapon4 = WeaponFactory.CreateWeapon();
+            weapon4.Setup(w => w.DamageType).Returns(DamageTypeEnum.Cold);
+            weapon4.Setup(w => w.EnergyDrain).Returns(100);
 
             wing1.Setup(w => w.Hardpoint).Returns((new[] {weapon1.Object, weapon2.Object}).ToList());
-            wing2.Setup(w => w.Hardpoint).Returns((new[] {weapon3.Object}).ToList());
+            wing2.Setup(w => w.Hardpoint).Returns((new[] {weapon3.Object, weapon4.Object}).ToList());
 
             ship.Setup(s => s.Wings).Returns((new[] {wing1.Object, wing2.Object}).ToList());
 
@@ -241,6 +245,25 @@ namespace xUnitTest
                 Assert.True(valid);
             else
                 Assert.False(valid);
+        }
+
+        [Fact]
+        public void CheckKineticEnergyOnlyOneWingLessThen35()
+        {
+            var ship = ShipFactory.CreateShip();
+            var wing = WingFactory.CreateWing();
+            
+            var weapon = WeaponFactory.CreateWeapon();
+            weapon.Setup(w => w.DamageType).Returns(DamageTypeEnum.Kinetic);
+            
+            wing.Setup(w => w.Hardpoint).Returns((new[] {weapon.Object}).ToList());
+            ship.Setup(s => s.Wings).Returns((new[] {wing.Object}).ToList());
+
+            weapon.Setup(w => w.EnergyDrain).Returns(35);
+            Assert.False(Validate(ship, "KineticDifference"));
+            
+            weapon.Setup(w => w.EnergyDrain).Returns(34);
+            Assert.True(Validate(ship, "KineticDifference"));
         }
 
         [Fact]
