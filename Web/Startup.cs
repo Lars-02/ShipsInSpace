@@ -29,7 +29,14 @@ namespace Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews(options =>
@@ -37,6 +44,11 @@ namespace Web
 
             services.AddScoped<ISpaceTransitAuthority, SpaceTransitAuthority>();
             services.AddScoped<ICalculations, Calculations>();
+
+            services.AddTransient<UserManager<IdentityUser>>();
+            services.AddTransient<ApplicationDbContext>();
+            
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

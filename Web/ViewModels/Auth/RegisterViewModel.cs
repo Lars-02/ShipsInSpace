@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Data.Model;
 
-namespace Web.ViewModels.RegisterShip
+namespace Web.ViewModels.Auth
 {
     public class RegisterViewModel
     {
@@ -13,8 +13,8 @@ namespace Web.ViewModels.RegisterShip
         [DisplayName("License plate")]
         public string LicensePlate { get; set; }
 
-        [Required(ErrorMessage = "This is not a valid option")]
-        [DisplayName("License2 type")]
+        [Required(ErrorMessage = "Licence a valid option")]
+        [DisplayName("License type")]
         [Range(0, 3)]
         public int LicenceId { get; set; } = -1;
         
