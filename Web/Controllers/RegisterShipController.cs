@@ -124,13 +124,24 @@ namespace Web.Controllers
                 return Json("Invalid ship, don't mess with the variables!!");
 
             var name = User.Identity?.Name;
+
             await _signInManager.SignOutAsync();
             await _userManager.SetLockoutEndDateAsync(await _userManager.FindByNameAsync(name), DateTime.MaxValue);
 
-            return View("Confirmation", new ConfirmationViewModel
+            return RedirectToAction("Confirmation", "RegisterShip", new ConfirmationViewModel
             {
                 TransponderCode = registrationId
             });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Confirmation(ConfirmationViewModel viewModel)
+        {
+            if (viewModel.TransponderCode == null)
+                return RedirectToAction("Index", "Home");
+            
+            return View(viewModel);
         }
 
         private Ship CreateShip(FullShipViewModel viewModel)
