@@ -161,7 +161,7 @@
         @for (var i = 0; i < Model.SelectedWings.Length; i++)
         {
             <input asp-for="SelectedWings[i]" type="hidden">
-            @for (var j = 0; j < Model.SelectedWeapons[i].Count; j++)
+            @for (var j = 0; i < Model.SelectedWeapons.Length && j < Model.SelectedWeapons[i].Count; j++)
             {
                 <input asp-for="SelectedWeapons[i][j]" type="hidden">
             }

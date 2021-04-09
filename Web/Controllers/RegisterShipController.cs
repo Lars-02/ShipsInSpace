@@ -78,12 +78,17 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult Wings(WingsViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
+            viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
+            
+            if (viewModel.SelectedWeapons.Length < viewModel.SelectedWings.Length)
             {
-                viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
-                viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
+                viewModel.SelectedWeapons = new List<int>[viewModel.SelectedWings.Length];
+                ModelState.AddModelError("AtLeastOneWeaponPerWing", "Please select at least one weapon per wing.");
                 return View(viewModel);
             }
+            if (!ModelState.IsValid)
+                return View(viewModel);
 
             var ship = CreateShip(viewModel);
 
@@ -91,11 +96,7 @@ namespace Web.Controllers
             Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass, license);
 
             if (ModelState.ErrorCount > 0)
-            {
-                viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
-                viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
-                return View("Wings", viewModel);
-            }
+                return View(viewModel);
 
             return View("Overview", new OverviewViewModel
             {
