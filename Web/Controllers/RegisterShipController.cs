@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Data.Model;
 using Data.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -23,10 +23,12 @@ namespace Web.Controllers
         private readonly ISpaceTransitAuthority _spaceTransitAuthority;
         private readonly ICalculations _calculations;
         private readonly UserManager<IdentityUser> _userManager;
+        private SignInManager<IdentityUser> _signInManager;
 
-        public RegisterShipController(UserManager<IdentityUser> userManager, ISpaceTransitAuthority spaceTransitAuthority, ICalculations calculations)
+        public RegisterShipController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ISpaceTransitAuthority spaceTransitAuthority, ICalculations calculations)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _spaceTransitAuthority = spaceTransitAuthority;
             _calculations = calculations;
         }
@@ -108,7 +110,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit(OverviewViewModel viewModel)
+        public async Task<IActionResult> Submit(OverviewViewModel viewModel)
         {
             var ship = CreateShip(viewModel);
             var license = (Licence) int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "License")?.Value ?? string.Empty);
@@ -119,6 +121,10 @@ namespace Web.Controllers
 
             if (ModelState.ErrorCount > 0 || registrationId.Length == 0)
                 return Json("Invalid ship, don't mess with the variables!!");
+
+            var name = User.Identity?.Name;
+            await _signInManager.SignOutAsync();
+            await _userManager.DeleteAsync(await _userManager.FindByNameAsync(name));
 
             return View("Confirmation", new ConfirmationViewModel
             {

@@ -40,8 +40,6 @@ namespace Web.Controllers
             
                 var result = await _userManager.CreateAsync(user, password);
             
-                Console.WriteLine(result.Succeeded);
-                
                 if (result.Succeeded)
                     await _userManager.AddToRoleAsync(user, Roles.Admin);
             }
