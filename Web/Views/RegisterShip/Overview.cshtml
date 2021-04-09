@@ -149,4 +149,19 @@
             </div>
         }
     </div>
+    <form asp-controller="RegisterShip" asp-action="Submit" method="POST">
+        @Html.AntiForgeryToken()
+        <input asp-for="HullId">
+        <input asp-for="EngineId">
+        <input asp-for="MaximumTakeoffMass">
+        @for (var i = 0; i < Model.SelectedWings.Length; i++)
+        {
+            <input asp-for="SelectedWings[i]" type="hidden">
+            @for (var j = 0; j < Model.SelectedWeapons[i].Count; j++)
+            {
+                <input asp-for="SelectedWeapons[i][j]" type="hidden">
+            }
+        }
+        <button type="submit" class="btn btn-dark my-3">Confirm</button>
+    </form>
 </div>

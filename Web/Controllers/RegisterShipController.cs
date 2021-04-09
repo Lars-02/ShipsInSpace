@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using Data.Model;
 using Data.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -79,21 +80,45 @@ namespace Web.Controllers
 
             Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass);
 
-            if (ModelState.ErrorCount <= 0)
-                return View("Overview", new OverviewViewModel
-                {
-                    Ship = ship,
-                    Weight = _calculations.GetShipWeight(ship),
-                    EnergyConsumption = _calculations.GetEnergyConsumption(ship),
-                    MaximumTakeoffMass = viewModel.MaximumTakeoffMass
-                });
+            if (ModelState.ErrorCount > 0)
+            {
+                viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
+                viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
+                return View("Wings", viewModel);
+            }
 
-            viewModel.AvailableWings = _spaceTransitAuthority.GetWings();
-            viewModel.AvailableWeapons = _spaceTransitAuthority.GetWeapons();
-            return View("Wings", viewModel);
+            return View("Overview", new OverviewViewModel
+            {
+                Ship = ship,
+                Weight = _calculations.GetShipWeight(ship),
+                EnergyConsumption = _calculations.GetEnergyConsumption(ship),
+                MaximumTakeoffMass = viewModel.MaximumTakeoffMass,
+                HullId = viewModel.HullId,
+                EngineId = viewModel.EngineId,
+                SelectedWings = viewModel.SelectedWings,
+                SelectedWeapons = viewModel.SelectedWeapons,
+            });
         }
 
-        private Ship CreateShip(WingsViewModel viewModel)
+        [HttpPost]
+        public IActionResult Submit(OverviewViewModel viewModel)
+        {
+            var ship = CreateShip(viewModel);
+            Validation.ValidateShip(ModelState, ship, _calculations, viewModel.MaximumTakeoffMass);
+
+            var shipJson = JsonSerializer.Serialize(ship);
+            var registrationId = _spaceTransitAuthority.RegisterShip(shipJson);
+
+            if (ModelState.ErrorCount > 0 || registrationId.Length == 0)
+                return Json("Invalid ship, don't mess with the variables!!");
+
+            return View("Confirmation", new ConfirmationViewModel
+            {
+                TransponderCode = registrationId
+            });
+        }
+
+        private Ship CreateShip(FullShipViewModel viewModel)
         {
             var ship = new Ship
             {
