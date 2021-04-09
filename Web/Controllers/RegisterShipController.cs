@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -124,7 +125,7 @@ namespace Web.Controllers
 
             var name = User.Identity?.Name;
             await _signInManager.SignOutAsync();
-            await _userManager.DeleteAsync(await _userManager.FindByNameAsync(name));
+            await _userManager.SetLockoutEndDateAsync(await _userManager.FindByNameAsync(name), DateTime.MaxValue);
 
             return View("Confirmation", new ConfirmationViewModel
             {
